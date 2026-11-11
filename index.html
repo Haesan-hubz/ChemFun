@@ -169,15 +169,16 @@ sup,sub{line-height:0;font-size:.7em}
 .note{font-size:13.5px;background:var(--primary-soft);color:var(--text);border-radius:12px;padding:10px 14px;min-height:3.2em}
 .presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 
-/* Flashcard - Fixed for Webkit */
+/* Flashcard - Super Compatible 2D/3D Flip */
 .fc-wrap{display:flex;flex-direction:column;align-items:center;gap:18px}
-.fc{width:100%;max-width:440px;aspect-ratio:16/10;perspective:1200px;background:none;border:0;padding:0;border-radius:22px;cursor:pointer;outline:none}
+.fc{width:100%;max-width:440px;aspect-ratio:16/10;background:none;border:0;padding:0;border-radius:22px;cursor:pointer;outline:none;perspective:1200px}
 .fc:focus-visible{outline:3px solid var(--secondary);outline-offset:3px}
-.fc-in{display:block;position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.3,.7,.2,1)}
-.fc.flip .fc-in{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;text-align:center;border:1px solid var(--line)}
-.face.front{background:var(--card);box-shadow:var(--shadow)}
-.face.back{background:var(--primary);color:#fff;transform:rotateY(180deg);border-color:transparent}
+.fc-in{display:block;position:relative;width:100%;height:100%}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;text-align:center;border:1px solid var(--line);transition:transform .55s cubic-bezier(.3,.7,.2,1)}
+.face.front{background:var(--card);box-shadow:var(--shadow);transform:rotateY(0deg)}
+.face.back{background:var(--primary);color:#fff;border-color:transparent;transform:rotateY(180deg)}
+.fc.flip .face.front{transform:rotateY(-180deg)}
+.fc.flip .face.back{transform:rotateY(0deg)}
 .face.back .nuc-nums,.face.back b{color:#fff}
 .face .hint{font-size:12px;color:var(--muted)}
 .face.back .hint{color:rgba(255,255,255,.8)}
@@ -437,10 +438,12 @@ if(!custom||!custom.subs)custom={subs:[],questions:[]};
 var prog=store('progress',{done:{},quiz:{},best:{}});
 if(!prog||!prog.done)prog={done:{},quiz:{},best:{}};
 if(!prog.ans)prog.ans={};
-var adminOn=store('admin',false)===true;
+
+// Fitur admin sekarang selalu aktif!
+var adminOn = true; 
 var quiz=null;
 
-function save(){store('custom',null,custom);store('progress',null,prog);store('admin',null,adminOn)}
+function save(){store('custom',null,custom);store('progress',null,prog)}
 
 function getMaterials(){
   var mats=BASE.materials.map(function(c){return {chapter_id:c.chapter_id,chapter_name:c.chapter_name,icon:c.icon,subtopics:c.subtopics.map(function(s){return {sub_id:s.sub_id,title:s.title,content:s.content,type:s.interactive_widget.type,instruction:s.interactive_widget.instruction,data:s.interactive_widget.data,custom:false}})}});
@@ -497,7 +500,6 @@ function route(){
   var h=(location.hash||'').slice(1)||'beranda';
   closeDrawer();
   var mats=getMaterials();
-  if(h==='admin'){adminOn=true;save()}
   renderSide(mats,h);
   if(h==='beranda')viewHome(mats);
   else if(h.indexOf('latihan')===0){var f=h.length>8?h.slice(8):'all';if(!quiz||quiz.filter!==f)startQuiz(f);viewQuiz(mats)}
@@ -523,11 +525,12 @@ function renderSide(mats,h){
     html+='</div></details>';
   });
   html+='<div class="nav-label">Ujian</div><a class="item'+(h.indexOf('latihan')===0?' on':'')+'" href="#latihan"><span class="ico" aria-hidden="true">🧠</span>Latihan Soal</a>';
-  if(adminOn)html+='<div class="nav-label">Pengelola</div><a class="item'+(h==='admin'?' on':'')+'" href="#admin"><span class="ico" aria-hidden="true">🤖</span>Buat Materi AI</a>';
-  html+='</nav><div class="side-foot">'+(adminOn?'<span class="admin-chip">Mode admin aktif</span> <button class="btn ghost small" id="adminOff" style="margin-left:4px">Tutup</button>':'Semangat terus belajarnya!')+'</div>';
+  
+  // Tombol Admin sekarang langsung muncul tanpa syarat tersembunyi
+  html+='<div class="nav-label">Pengelola Materi</div><a class="item'+(h==='admin'?' on':'')+'" href="#admin"><span class="ico" aria-hidden="true">🤖</span>Buat Materi AI</a>';
+  
+  html+='</nav><div class="side-foot">Semangat terus belajarnya!</div>';
   side.innerHTML=html;
-  var taps=0,tt;$('#brand').addEventListener('click',function(){taps++;clearTimeout(tt);tt=setTimeout(function(){taps=0},900);if(taps>=5&&!adminOn){adminOn=true;save();toast('Mode admin dibuka');route()}});
-  var off=$('#adminOff');if(off)off.addEventListener('click',function(){adminOn=false;save();location.hash==='#admin'?(location.hash='#beranda'):route()});
 }
 function closeDrawer(){side.classList.remove('open');$('#scrim').classList.remove('on');$('#menuBtn').setAttribute('aria-expanded','false')}
 $('#menuBtn').addEventListener('click',function(){var o=side.classList.toggle('open');$('#scrim').classList.toggle('on',o);this.setAttribute('aria-expanded',String(o))});
@@ -610,7 +613,7 @@ function pairsFrom(d,content){
    SIMULASI WIDGET PENUH BERGAMBAR
 ========================================= */
 
-/* 1. Flashcard - DIPERBAIKI (Div + Keyboard Nav) */
+/* 1. Flashcard - SUPER COMPATIBLE FIX */
 function defaultDeck(){
   var D=[[3,7,0],[6,12,0],[8,16,0],[11,23,0],[17,35,0],[11,23,1],[17,35,-1]];
   return D.map(function(d){
@@ -780,7 +783,7 @@ function mountNaCl(root){
   info();
 }
 
-/* 7. Diagram Energi - DIPERBAIKI (Flexbox Layout) */
+/* 7. Diagram Energi */
 function mountEnergy(root){
   var R=80,P=30;
   root.innerHTML='<div class="atom"><div class="atom-stage" style="padding:16px 0"><svg class="atom-svg" viewBox="0 0 360 280" role="img" aria-label="Diagram tingkat energi reaksi"><line x1="40" y1="16" x2="40" y2="256" stroke="var(--muted)" stroke-width="1.5"/><text x="16" y="136" transform="rotate(-90 16 136)" style="fill:var(--muted);font-size:12px;text-anchor:middle">Entalpi (H)</text><g id="eg"></g></svg></div><div style="display:flex;flex-direction:column;gap:12px">'
