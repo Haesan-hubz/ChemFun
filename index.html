@@ -1,10 +1,11 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>ChemistFun - Ultimate Edition</title>
+<title>ChemistFun Ultimate</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* Layout: sidebar bab di kiri (drawer di ponsel), konten materi di kanan, widget simulasi tepat di bawah teks materi. */
 :root{
   --bg:#F8FAFC; --card:#FFFFFF; --card-2:#F1F5F9; --line:#E2E8F0;
   --text:#334155; --muted:#64748B; --strong:#1E293B;
@@ -23,6 +24,14 @@
   --accent:#FB7185; --accent-ink:#FDA4AF; --accent-soft:rgba(251,113,133,.14);
   --success:#34D399; --success-ink:#6EE7B7; --success-soft:rgba(52,211,153,.14);
   --neutron:#64748B; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1120; --card:#131C31; --card-2:#0F172A; --line:#243049;
+  --text:#CBD5E1; --muted:#94A3B8; --strong:#F1F5F9;
+  --primary:#5B5BE0; --primary-ink:#A5B4FC; --primary-soft:rgba(129,140,248,.14);
+  --secondary:#22D3EE; --secondary-ink:#67E8F9; --secondary-soft:rgba(34,211,238,.12);
+  --accent:#FB7185; --accent-ink:#FDA4AF; --accent-soft:rgba(251,113,133,.14);
+  --success:#34D399; --success-ink:#6EE7B7; --success-soft:rgba(52,211,153,.14);
+  --neutron:#64748B; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5); color-scheme:dark}
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -36,6 +45,7 @@ a{color:var(--primary-ink)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 sup,sub{line-height:0;font-size:.7em}
 
+/* Shell */
 .app{display:grid;grid-template-columns:292px minmax(0,1fr);min-height:100vh}
 .side{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--card);border-right:1px solid var(--line);
   padding:22px 16px 20px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:18px}
@@ -66,6 +76,7 @@ sup,sub{line-height:0;font-size:.7em}
 .main{min-width:0;padding:32px max(24px,env(safe-area-inset-right,0px)) 72px 40px}
 .page{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
 
+/* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:12px;padding:10px 18px;font-weight:600;font-size:14px;text-decoration:none;background:var(--primary);color:var(--on-primary);transition:transform .12s,filter .12s}
 .btn:hover{filter:brightness(1.08)}
 .btn:active{transform:translateY(1px)}
@@ -77,12 +88,14 @@ sup,sub{line-height:0;font-size:.7em}
 .btn[disabled]{opacity:.45;cursor:not-allowed;filter:none}
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 
+/* Cards */
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow)}
 .kicker{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--primary-ink)}
 .muted{color:var(--muted)}
 .crumbs{display:flex;flex-wrap:wrap;gap:6px;font-size:13px;color:var(--muted)}
 .crumbs a{color:var(--muted);text-decoration:none}.crumbs a:hover{color:var(--primary-ink)}
 
+/* Home */
 .hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px;align-items:center;background:var(--primary);color:#fff;border-radius:24px;padding:36px;position:relative;overflow:hidden}
 .hero h1{color:#fff;font-size:clamp(26px,4vw,36px);font-weight:700;letter-spacing:-.02em}
 .hero p{color:rgba(255,255,255,.88);margin-top:12px;max-width:46ch}
@@ -109,6 +122,7 @@ sup,sub{line-height:0;font-size:.7em}
 .sec-head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}
 .sec-head h2{font-size:20px}
 
+/* Material */
 .title{font-size:clamp(24px,3.4vw,32px);font-weight:700;letter-spacing:-.02em}
 .prose{max-width:68ch;font-size:16px;line-height:1.8; white-space: pre-wrap;}
 .prose p+p{margin-top:14px}
@@ -125,7 +139,7 @@ sup,sub{line-height:0;font-size:.7em}
 .pager small{color:var(--muted);font-size:12px}
 .pager span{font-weight:600;font-size:14px}
 
-/* Atom Widget CSS */
+/* Atom */
 .atom{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:center}
 .atom-stage{background:var(--card-2);border-radius:18px;border:1px solid var(--line)}
 .atom-svg{display:block;width:100%;height:auto;max-height:420px}
@@ -329,41 +343,68 @@ input:focus,select:focus,textarea:focus{outline:3px solid var(--secondary);outli
 (function(){
 'use strict';
 
-/* ---------- Data Kimia Terintegrasi (Bab 1 - Bab 6) ---------- */
+/* ---------- Data (Keseluruhan 6 Bab) ---------- */
 var BASE={
-  app:{name:'ChemistFun Ultimate',tagline:'Ruang Belajar Kimia',description:'Website interaktif kelas 11 SMA. Meliputi struktur atom, termokimia, laju reaksi, hingga kesetimbangan.'},
+  app:{name:'ChemistFun Ultimate',tagline:'Ruang Belajar Kimia 11',description:'Website interaktif terlengkap untuk persiapan UH, PTS, PAS, dan belajar mandiri Kimia kelas 11 SMA.'},
   materials:[
     {chapter_id:'bab-1',chapter_name:'Bab 1: Struktur Atom & Sistem Periodik',icon:'⚛️',subtopics:[
-      {sub_id:'sub-1-1',title:'Mengenal Atom: Lego Alam Semesta',content:'Pernahkah kamu membayangkan apa penyusun terkecil dari benda-benda di sekitarmu? Atom ibarat balok lego penyusun alam semesta! Di bagian tengahnya (inti atom) ada Proton (+) dan Neutron (netral) yang asyik nongkrong bareng. Di luar inti, ada Elektron (-) yang super aktif berlarian mengelilingi inti.',interactive_widget:{type:'atom_simulation',instruction:"Klik tombol '+' untuk menambahkan Proton atau Elektron dan lihat bagaimana sifat atom berubah secara real-time!"}},
+      {sub_id:'sub-1-1',title:'Mengenal Atom: Lego Alam Semesta',content:'Pernahkah kamu membayangkan apa penyusun terkecil dari benda-benda di sekitarmu? Atom ibarat balok lego penyusun alam semesta! Di bagian tengahnya (inti atom) ada Proton (+) dan Neutron (netral) yang asyik nongkrong bareng. Di luar inti, ada Elektron (-) yang super aktif berlarian mengelilingi inti seperti planet mengelilingi matahari.',interactive_widget:{type:'atom_simulation',instruction:"Klik tombol '+' untuk menambahkan Proton atau Elektron dan lihat bagaimana sifat atom berubah secara real-time!"}},
       {sub_id:'sub-1-2',title:'KTP Atom: Nomor Atom & Massa',content:"Bagaimana cara membedakan atom emas dan atom besi? Kita pakai 'KTP' atom! Nomor Atom = jumlah Proton (identitas asli). Sedangkan Nomor Massa = jumlah Proton + Neutron (ibarat berat badan atom). Ingat, Elektron itu saking ringannya, beratnya tidak dihitung!",interactive_widget:{type:'flashcard',instruction:'Balik kartu interaktif ini untuk menebak lambang unsur dan jumlah partikel dasarnya.'}}
     ]},
     {chapter_id:'bab-2',chapter_name:'Bab 2: Ikatan Kimia',icon:'🔗',subtopics:[
       {sub_id:'sub-2-1',title:"Kenapa Atom Suka 'Menikah'?",content:'Kecuali Gas Mulia yang sudah mandiri (stabil), atom-atom lain itu tidak suka jomblo! Agar stabil, mereka harus berikatan. Ada yang memakai sistem serah-terima elektron (Ikatan Ion), ada juga yang patungan elektron buat dipakai bareng (Ikatan Kovalen).',interactive_widget:{type:'drag_and_drop',instruction:'Tarik satu elektron dari atom Na ke atom Cl untuk membentuk Ikatan Ion NaCl yang stabil!'}}
     ]},
-    {chapter_id:'bab-3',chapter_name:'Bab 3: Termokimia',icon:'🔥',subtopics:[
-      {sub_id:'sub-3-1',title:'Reaksi Eksoterm & Endoterm',content:'Setiap reaksi kimia disertai perubahan entalpi (ΔH). Reaksi EKSOTERM melepas kalor dari sistem ke lingkungan (ΔH negatif, terasa panas). Reaksi ENDOTERM menyerap kalor dari lingkungan ke sistem (ΔH positif, terasa dingin).',interactive_widget:{type:'energy_diagram',instruction:'Geser tingkat energi reaktan dan produk, lalu lihat tanda ΔH dan jenis reaksinya.'}},
-      {sub_id:'sub-3-2',title:'Kalorimetri: Mengukur Kalor Reaksi',content:'Kalor reaksi bisa diukur lewat percobaan memakai kalorimeter. Prinsipnya asas Black: kalor yang dilepas sama dengan kalor yang diserap. Kalorimeter sederhana (gelas styrofoam), hanya larutan yang dihitung: q = m × c × ΔT.',interactive_widget:{type:'kalorimeter',instruction:'Atur volume, konsentrasi, dan kenaikan suhu. Lihat kalor dan ΔH dihitung langkah demi langkah.'}}
+    {chapter_id:"bab-3",chapter_name:"Bab 3: Termokimia",icon:"🔥",subtopics:[
+      {sub_id:"sub-3-1",title:"Sistem, Lingkungan & Kekekalan Energi",content:"Dalam termokimia, bagian yang sedang kita amati disebut SISTEM. Segala sesuatu di luar sistem disebut LINGKUNGAN.",interactive_widget:{"type":"drag_drop","instruction":"Pasangkan jenis sistem dengan cirinya. Tarik istilah ke kotak yang tepat.","data":[{"term":"Sistem terbuka","match":"Bertukar energi dan materi"},{"term":"Sistem tertutup","match":"Hanya bertukar energi"},{"term":"Sistem terisolasi","match":"Tidak bertukar energi maupun materi"},{"term":"Lingkungan","match":"Segala sesuatu di luar sistem"}]}},
+      {sub_id:"sub-3-2",title:"Reaksi Eksoterm & Endoterm",content:"Reaksi EKSOTERM melepas kalor dari sistem ke lingkungan (suhu naik, ΔH negatif). Reaksi ENDOTERM menyerap kalor dari lingkungan (suhu turun, ΔH positif).",interactive_widget:{"type":"energy_diagram","instruction":"Geser tingkat energi reaktan dan produk, lalu lihat tanda ΔH dan perubahannya."}},
+      {sub_id:"sub-3-3",title:"Persamaan Termokimia & Jenis Entalpi",content:"Persamaan termokimia adalah persamaan reaksi setara dengan nilai ΔH. Jenis entalpi: pembentukan (ΔH°f), penguraian (ΔH°d), pembakaran (ΔH°c), dan penetralan (ΔH°n).",interactive_widget:{"type":"flashcard","instruction":"Balik kartu untuk mengecek definisi tiap jenis entalpi.","data":[{"front":"Entalpi pembentukan standar (ΔH°f)","back":"Pembentukan 1 mol senyawa dari unsur-unsurnya."},{"front":"Entalpi penguraian standar (ΔH°d)","back":"Kebalikan pembentukan: 1 mol senyawa terurai."},{"front":"Entalpi pembakaran standar (ΔH°c)","back":"Pembakaran sempurna 1 mol zat dengan O₂. Selalu eksoterm."},{"front":"Nilai ΔH°f unsur bebas","back":"Nol. Berlaku untuk unsur O₂, H₂, N₂, C(grafit), Na, dll"}]}},
+      {sub_id:"sub-3-4",title:"Kalorimetri: Mengukur Kalor Reaksi",content:"Kalor reaksi bisa diukur lewat percobaan memakai kalorimeter. Prinsipnya asas Black. q = m × c × ΔT.",interactive_widget:{"type":"kalorimeter","instruction":"Atur volume, konsentrasi, dan suhu. Lihat kalor dan ΔH dihitung langkah demi langkah."}},
+      {sub_id:"sub-3-5",title:"Hukum Hess",content:"Hukum Hess: perubahan entalpi hanya bergantung keadaan awal dan akhir. ΔH reaksi = Σ ΔH°f produk − Σ ΔH°f reaktan.",interactive_widget:{"type":"slider","instruction":"Geser untuk menelusuri langkah penyelesaian soal Hess.","data":{"steps":["Cari reaksi yang ditanyakan.","Cocokkan reaksi yang diketahui, balik/kalikan jika perlu.","Coret zat yang sama di kiri dan kanan.","Jumlahkan ΔH.","Atau gunakan rumus pintas: ΔH = Σ ΔH°f produk − Σ ΔH°f reaktan."]}}},
+      {sub_id:"sub-3-6",title:"Energi Ikatan",content:"Energi ikatan adalah kalor untuk memutus 1 mol ikatan kovalen. ΔH reaksi = Σ energi ikatan yang putus − Σ energi ikatan yang terbentuk.",interactive_widget:{"type":"bond_calc","instruction":"Pilih reaksi dan lihat jumlah ikatan yang putus/terbentuk beserta ΔH-nya.","data":{"reactions":[{"name":"H₂ + Cl₂ → 2HCl","break":[["H–H",1,436],["Cl–Cl",1,242]],"form":[["H–Cl",2,431]]},{"name":"CH₄ + 2O₂ → CO₂ + 2H₂O(g)","break":[["C–H",4,413],["O=O",2,498]],"form":[["C=O",2,799],["O–H",4,463]]}]}}}
     ]},
-    {chapter_id:'bab-4',chapter_name:'Bab 4: Laju Reaksi',icon:'⚡',subtopics:[
-      {sub_id:'sub-4-1',title:'Faktor yang Mempengaruhi Laju Reaksi',content:'Ada empat faktor utama: Konsentrasi, Luas Permukaan, Suhu, dan Katalis. Suhu naik, energi kinetik rata-rata partikel naik, sehingga lebih banyak partikel mencapai energi aktivasi (Ea).',interactive_widget:{type:'rate_temp',instruction:'Geser suhu dan lihat kelajuan reaksi meningkat drastis.'}},
-      {sub_id:'sub-4-2',title:'Teori Tumbukan & Energi Aktivasi',content:'Menurut teori tumbukan, reaksi terjadi karena partikel pereaksi saling bertumbukan. Hanya tumbukan efektif yang berhasil, yaitu tumbukan dengan (1) energi yang cukup dan (2) orientasi yang tepat.',interactive_widget:{type:'collision',instruction:'Atur suhu, konsentrasi, dan katalis. Amati partikel yang bertumbukan dan efektivitasnya.'}}
+    {chapter_id:"bab-4",chapter_name:"Bab 4: Laju Reaksi",icon:"⚡",subtopics:[
+      {sub_id:"sub-4-1",title:"Apa Itu Laju Reaksi?",content:"Laju reaksi mengukur seberapa cepat reaktan habis atau produk terbentuk per satuan waktu.",interactive_widget:{"type":"drag_drop","instruction":"Reaksi 2N₂O₅ → 4NO + 3O₂. Pasangkan laju menurut perbandingan koefisien.","data":[{"term":"Laju NO 4 M/s, laju N₂O₅ terurai?","match":"2 M/s"},{"term":"Laju NO 4 M/s, laju O₂ terbentuk?","match":"3 M/s"}]}},
+      {sub_id:"sub-4-2",title:"Orde Reaksi",content:"Orde reaksi menunjukkan seberapa besar pengaruh konsentrasi terhadap laju.",interactive_widget:{"type":"orde_lab","instruction":"Pilih orde reaksi, naikkan konsentrasi, perhatikan perubahan laju."}},
+      {sub_id:"sub-4-3",title:"Menentukan Persamaan Laju",content:"Bandingkan dua percobaan yang hanya mengubah SATU konsentrasi untuk mencari orde.",interactive_widget:{"type":"slider","instruction":"Geser menelusuri langkah pengerjaan data percobaan.","data":{"steps":["Bandingkan 2 data dengan salah satu konsentrasi tetap.","Hitung berapa kali lipat konsentrasi naik.","Hitung berapa kali lipat laju naik.","Gunakan rumus: (Perubahan Konsentrasi) ^ Orde = Perubahan Laju.","Cari tetapan k dengan memasukkan data ke rumus akhir."]}}},
+      {sub_id:"sub-4-4",title:"Teori Tumbukan",content:"Reaksi butuh tumbukan efektif: energi cukup (Ea) dan orientasi tepat.",interactive_widget:{"type":"collision","instruction":"Atur parameter dan lihat efektivitas tumbukan molekul."}},
+      {sub_id:"sub-4-5",title:"Faktor Laju Reaksi",content:"Konsentrasi, luas permukaan, suhu, dan katalis mempengaruhi laju reaksi.",interactive_widget:{"type":"rate_temp","instruction":"Geser suhu dan amati kenaikan laju reaksi secara eksponensial."}},
+      {sub_id:"sub-4-6",title:"Katalis",content:"Katalis mempercepat reaksi dengan menurunkan energi aktivasi.",interactive_widget:{"type":"flashcard","instruction":"Uji ingatan tentang sifat katalis.","data":[{"front":"Apa yang diturunkan katalis?","back":"Energi aktivasi (Ea)"},{"front":"Apakah katalis mengubah ΔH?","back":"Tidak!"},{"front":"Apakah katalis habis bereaksi?","back":"Tidak, ia diperoleh kembali di akhir reaksi."}]}}
     ]},
-    {chapter_id:'bab-5',chapter_name:'Bab 5: Kesetimbangan Kimia',icon:'⚖️',subtopics:[
-      {sub_id:'sub-5-1',title:'Reaksi Reversibel & Dinamis',content:'Kesetimbangan disebut "dinamis" karena secara makroskopis (kasat mata) reaksi seolah berhenti, dan konsentrasi zat-zat tampak tetap. TAPI, secara mikroskopis reaksi tetap berlangsung terus-menerus ke arah kanan dan kiri dengan laju yang SAMA BESAR (v1 = v2).',interactive_widget:{type:'flashcard',instruction:'Cek ingatanmu mengenai syarat dan konsep kesetimbangan.',data:[{front:'Apa tanda sebuah reaksi merupakan reaksi reversibel?',back:'Tanda panah bolak-balik (⇌)'},{front:'Syarat utama terjadinya kesetimbangan dinamis adalah?',back:'Laju reaksi ke kanan sama dengan laju reaksi ke kiri (v1 = v2)'},{front:'Apakah saat keadaan setimbang reaksi kimia benar-benar berhenti?',back:'Tidak! Reaksi terus berjalan di tingkat mikroskopis.'}]}},
-      {sub_id:'sub-5-2',title:'Tetapan Kesetimbangan (Kc)',content:'Hanya zat berwujud Gas (g) dan Larutan (aq) yang dimasukkan ke dalam rumus Kc! Zat berwujud Padat (s) dan Cairan Murni (l) TIDAK DIMASUKKAN (karena konsentrasinya dianggap konstan/tetap).',interactive_widget:{type:'drag_drop',instruction:'Pasangkan reaksi kesetimbangan dengan rumus Kc yang benar!',data:[{term:'N2(g) + 3H2(g) ⇌ 2NH3(g)',match:'Kc = [NH3]² / ([N2][H2]³)'},{term:'CaCO3(s) ⇌ CaO(s) + CO2(g)',match:'Kc = [CO2]'},{term:'H2O(l) ⇌ H+(aq) + OH-(aq)',match:'Kc = [H+][OH-]'},{term:'2SO2(g) + O2(g) ⇌ 2SO3(g)',match:'Kc = [SO3]² / ([SO2]²[O2])'}]}},
-      {sub_id:'sub-5-3',title:'Tetapan Parsial Gas (Kp)',content:'Untuk reaksi gas, kesetimbangan bisa dihitung memakai tekanan parsial (Kp). Hubungan Kp dan Kc:\nKp = Kc × (R × T)^Δn\n\nKeterangan:\nΔn = (Jumlah koefisien gas di KANAN) - (Jumlah koefisien gas di KIRI).',interactive_widget:{type:'slider',instruction:'Geser penjelajah langkah untuk mencari nilai Δn pada reaksi Haber-Bosch.',data:{steps:['Reaksi pembuatan Amonia: N2(g) + 3H2(g) ⇌ 2NH3(g)','Langkah 1: Cek wujud zat. Semuanya gas, maka semua dihitung koefisiennya.','Langkah 2: Hitung koefisien gas di ruas KANAN (produk). Kanan = 2.','Langkah 3: Hitung koefisien gas di ruas KIRI (reaktan). Kiri = 1 + 3 = 4.','Langkah 4: Hitung selisih (Δn) = Kanan - Kiri = 2 - 4 = -2.','Langkah 5: Masukkan ke rumus: Kp = Kc(RT)⁻²']}}},
-      {sub_id:'sub-5-4',title:'Asas Le Chatelier',content:'Henri Le Chatelier: "Jika terhadap sistem kesetimbangan diberikan aksi, sistem akan bereaksi meminimalkan efek tersebut."\n\nSuhu: Naik -> Bergeser ke Endoterm; Turun -> Bergeser ke Eksoterm.\nVolume: Diperbesar -> Koefisien Gas Besar; Diperkecil -> Koefisien Gas Kecil.\nKonsentrasi: Tambah -> Menjauhi; Kurangi -> Mendekati.',interactive_widget:{type:'flashcard',instruction:'Tebak ke mana kesetimbangan akan bergeser bila diberi aksi berikut!',data:[{front:'Suhu ruangan dinaikkan (dipanaskan)',back:'Bergeser ke arah reaksi ENDOTERM (menyerap panas)'},{front:'Suhu ruangan diturunkan (didinginkan)',back:'Bergeser ke arah reaksi EKSOTERM (melepas panas)'},{front:'Volume diperkecil (Tekanan diperbesar)',back:'Bergeser ke arah yang memiliki KOEFISIEN GAS TERKECIL'},{front:'Volume diperbesar (Tekanan diperkecil)',back:'Bergeser ke arah yang memiliki KOEFISIEN GAS TERBESAR'},{front:'Katalis ditambahkan',back:'TIDAK BERGESER. Hanya mempercepat tercapainya kesetimbangan.'}]}}
+    {chapter_id:"bab-5",chapter_name:"Bab 5: Ikatan, Bentuk Molekul & Hidrokarbon",icon:"🧬",subtopics:[
+      {sub_id:"sub-5-1",title:"Ikatan Ion, Kovalen & Logam",content:"Ada tiga jenis ikatan utama: Ion (serah terima), Kovalen (pakai bersama), Logam (lautan elektron).",interactive_widget:{"type":"drag_drop","instruction":"Pasangkan jenis ikatan dengan cirinya.","data":[{"term":"Ikatan ion","match":"Serah-terima elektron, contoh NaCl"},{"term":"Kovalen polar","match":"Pemakaian bersama namun asimetris, contoh HCl"},{"term":"Ikatan logam","match":"Kation logam dalam lautan elektron"}]}},
+      {sub_id:"sub-5-2",title:"Sifat Fisik",content:"Sifat senyawa ion titik didih tinggi dan larutannya menghantarkan listrik. Senyawa kovalen titik didih relatif rendah.",interactive_widget:{"type":"flashcard","instruction":"Tebak jenis ikatannya dari sifat fisiknya.","data":[{"front":"Titik leleh sangat tinggi, padatan tidak menghantarkan, larutan menghantarkan","back":"Senyawa ion"},{"front":"Titik leleh rendah, tidak menghantarkan listrik","back":"Senyawa kovalen sederhana"},{"front":"Dapat ditempa dan konduktor baik","back":"Logam"}]}},
+      {sub_id:"sub-5-3",title:"Kovalen Koordinasi",content:"Ikatan di mana pasangan elektron hanya disumbangkan oleh SATU atom (yang punya PEB).",interactive_widget:{"type":"slider","instruction":"Lihat pembentukan ion amonium NH₄⁺.","data":{"steps":["NH₃ memiliki 1 PEB di atom N.","Ion H⁺ tidak punya elektron (orbital kosong).","N menyumbangkan PEB sepenuhnya ke H⁺ untuk dipakai bersama.","Terbentuk ikatan kovalen koordinasi pada NH₄⁺."]}}},
+      {sub_id:"sub-5-4",title:"Bentuk Molekul (VSEPR)",content:"Pasangan elektron tolak-menolak. Tipe AXnEm menentukan bentuk.",interactive_widget:{"type":"drag_drop","instruction":"Pasangkan tipe molekul dengan bentuknya.","data":[{"term":"AX₂ (CO₂)","match":"Linear 180°"},{"term":"AX₄ (CH₄)","match":"Tetrahedral 109,5°"},{"term":"AX₃E (NH₃)","match":"Trigonal piramida 107°"},{"term":"AX₂E₂ (H₂O)","match":"Bentuk V 104,5°"}]}},
+      {sub_id:"sub-5-5",title:"Gaya Antarmolekul",content:"Dari paling lemah ke paling kuat: Gaya London -> Dipol-dipol -> Ikatan Hidrogen.",interactive_widget:{"type":"flashcard","instruction":"Tebak gaya antarmolekul utamanya.","data":[{"front":"N₂ dengan N₂","back":"Gaya London (Nonpolar)"},{"front":"HCl dengan HCl","back":"Gaya dipol-dipol (Polar)"},{"front":"H₂O dengan H₂O","back":"Ikatan Hidrogen (H terikat F/O/N)"}]}},
+      {sub_id:"sub-5-6",title:"Hidrokarbon & Tata Nama",content:"Alkana (C-C), Alkena (C=C), Alkuna (C≡C). Penamaan berdasar rantai terpanjang.",interactive_widget:{"type":"drag_drop","instruction":"Pasangkan rumus hidrokarbon.","data":[{"term":"Propana","match":"C₃H₈"},{"term":"Butena","match":"C₄H₈"},{"term":"Heksana","match":"C₆H₁₄"}]}}
+    ]},
+    {chapter_id:'bab-6',chapter_name:'Bab 6: Kesetimbangan Kimia',icon:'⚖️',subtopics:[
+      {sub_id:'sub-6-1',title:'Reaksi Reversibel & Dinamis',content:'Kesetimbangan disebut "dinamis" karena secara makroskopis reaksi seolah berhenti, namun mikroskopis tetap berjalan dengan laju kanan = kiri (v1 = v2).',interactive_widget:{type:'flashcard',instruction:'Cek ingatanmu mengenai syarat dan konsep kesetimbangan.',data:[{front:'Apa tanda sebuah reaksi reversibel?',back:'Panah bolak-balik (⇌)'},{front:'Syarat kesetimbangan dinamis?',back:'v1 = v2 (laju kanan = kiri)'}]}},
+      {sub_id:'sub-6-2',title:'Tetapan Kesetimbangan (Kc)',content:'Hanya zat berwujud Gas (g) dan Larutan (aq) yang dimasukkan ke rumus Kc. Padat (s) dan Cairan Murni (l) diabaikan.',interactive_widget:{type:'drag_drop',instruction:'Pasangkan reaksi dengan rumus Kc yang benar!',data:[{term:'N2(g) + 3H2(g) ⇌ 2NH3(g)',match:'Kc = [NH3]² / ([N2][H2]³)'},{term:'CaCO3(s) ⇌ CaO(s) + CO2(g)',match:'Kc = [CO2]'},{term:'H2O(l) ⇌ H+(aq) + OH-(aq)',match:'Kc = [H+][OH-]'},{term:'2SO2(g) + O2(g) ⇌ 2SO3(g)',match:'Kc = [SO3]² / ([SO2]²[O2])'}]}},
+      {sub_id:'sub-6-3',title:'Tetapan Parsial Gas (Kp)',content:'Kp = Kc × (R × T)^Δn. Δn = (Jumlah koef gas Kanan) - (Jumlah koef gas Kiri).',interactive_widget:{type:'slider',instruction:'Geser langkah mencari Δn reaksi Haber-Bosch.',data:{steps:['N2(g) + 3H2(g) ⇌ 2NH3(g)','Semuanya gas, jadi semua dihitung.','Koefisien Kanan = 2 (dari 2NH3).','Koefisien Kiri = 1 + 3 = 4.','Δn = Kanan - Kiri = 2 - 4 = -2.','Maka, Kp = Kc(RT)⁻²']}}},
+      {sub_id:'sub-6-4',title:'Asas Le Chatelier',content:'Suhu Naik -> Endoterm, Suhu Turun -> Eksoterm. Volume Diperbesar -> Koef Gas Besar, Volume Diperkecil -> Koef Gas Kecil.',interactive_widget:{type:'flashcard',instruction:'Tebak ke mana pergeserannya!',data:[{front:'Suhu dinaikkan',back:'Bergeser ke reaksi ENDOTERM'},{front:'Suhu diturunkan',back:'Bergeser ke reaksi EKSOTERM'},{front:'Volume diperkecil (Tekanan besar)',back:'Bergeser ke KOEFISIEN GAS TERKECIL'},{front:'Volume diperbesar (Tekanan kecil)',back:'Bergeser ke KOEFISIEN GAS TERBESAR'}]}}
     ]}
   ],
   quiz:{
     title:'Uji Pemahaman Kimia Lintas Bab 🧠',
     description:'Kumpulan latihan soal lengkap. Pilih bab yang mau diuji pada filter di atas!',
     questions:[
+      /* BAB 1 & 2 */
       {q_id:'q-001',chapter_ref:'bab-1',question_text:'Partikel penyusun inti atom yang sama sekali tidak memiliki muatan listrik adalah...',options:['A. Proton','B. Elektron','C. Neutron','D. Positron'],correct_answer:'C. Neutron',explanation:"Tepat sekali! 'Neutron' netral, Proton Positif (+), Elektron Negatif (-)."},
       {q_id:'q-002',chapter_ref:'bab-2',question_text:'Unsur Natrium (Na) berikatan dengan Klorin (Cl) membentuk garam dapur (NaCl). Jenis ikatan apa yang terjadi?',options:['A. Kovalen Polar','B. Kovalen Non-polar','C. Ion','D. Logam'],correct_answer:'C. Ion',explanation:'Serah-terima elektron antara Logam dan Non-logam disebut Ikatan Ion.'},
-      {q_id:'q-kc-01',chapter_ref:'bab-5',type:'pg',topic:'Konsep Kesetimbangan',question_text:'Sistem reaksi dikatakan mencapai kesetimbangan dinamis apabila...',options:['A. Reaksi berhenti total','B. Jumlah mol reaktan = produk','C. Laju reaksi pembentukan produk = laju reaksi penguraiannya','D. Reaktan habis'],correct_answer:'C. Laju reaksi pembentukan produk = laju reaksi penguraiannya',explanation:'Kesetimbangan dinamis tercapai ketika laju reaksi ke kanan (v1) = laju reaksi ke kiri (v2).'},
-      {q_id:'q-kc-02',chapter_ref:'bab-5',type:'pg',topic:'Rumus Kc',question_text:'Reaksi: BiCl3(aq) + H2O(l) ⇌ BiOCl(s) + 2HCl(aq)\nRumus tetapan kesetimbangan (Kc) yang benar adalah...',options:['A. Kc = [BiOCl][HCl]² / [BiCl3][H2O]','B. Kc = [HCl]² / [BiCl3]','C. Kc = [BiCl3] / [HCl]²','D. Kc = [HCl] / [BiCl3]'],correct_answer:'B. Kc = [HCl]² / [BiCl3]',explanation:'Zat berwujud padat (s) dan cair (l) diabaikan. BiOCl(s) dan H2O(l) dicoret dari rumus.'},
-      {q_id:'q-kc-06',chapter_ref:'bab-5',type:'pg',topic:'Pergeseran (Suhu & Volume)',question_text:'N2(g) + 3H2(g) ⇌ 2NH3(g)  ΔH = -92 kJ\nAgar hasil amonia (NH3) maksimum, perlakuan yang tepat berdasarkan Asas Le Chatelier adalah...',options:['A. Suhu dinaikkan dan volume diperbesar','B. Suhu diturunkan dan tekanan diperbesar','C. Suhu dinaikkan dan tekanan diperkecil','D. Ditambah katalis'],correct_answer:'B. Suhu diturunkan dan tekanan diperbesar',explanation:'Reaksi ke kanan Eksoterm (ΔH negatif), jadi turunkan suhu. Koefisien kanan (2) lebih kecil dari kiri (4), jadi perbesar tekanan (perkecil volume) agar geser ke koefisien kecil.'}
+      /* BAB 3 */
+      {q_id:"t-001",chapter_ref:"bab-3",type:"pg",topic:"Eksoterm dan endoterm",question_text:"Proses berikut yang termasuk reaksi endoterm adalah...",options:["A. Pembakaran gas LPG","B. Perkaratan pagar besi","C. Fotosintesis pada tanaman","D. Netralisasi HCl dengan NaOH"],correct_answer:"C. Fotosintesis pada tanaman",explanation:"Fotosintesis menyerap energi cahaya, jadi sistem menerima kalor (endoterm)."},
+      {q_id:"t-002",chapter_ref:"bab-3",type:"pg",topic:"Hukum Hess",question_text:"Diketahui:\nC(s) + O₂(g) → CO₂(g) ΔH = −393,5 kJ\nCO(g) + ½O₂(g) → CO₂(g) ΔH = −283,0 kJ\nΔH untuk reaksi C(s) + ½O₂(g) → CO(g) adalah...",options:["A. −676,5 kJ","B. −110,5 kJ","C. +110,5 kJ","D. −504,5 kJ"],correct_answer:"B. −110,5 kJ",explanation:"Reaksi 1 tetap, Reaksi 2 dibalik. (-393,5) + (+283,0) = -110,5 kJ."},
+      /* BAB 4 */
+      {q_id:"l-001",chapter_ref:"bab-4",type:"pg",topic:"Pengaruh suhu",question_text:"Setiap kenaikan suhu 10 °C, laju reaksi menjadi 2 kali semula. Pada 20 °C laju reaksi 4 × 10⁻³ M/s. Laju reaksi pada 50 °C adalah...",options:["A. 1,6 × 10⁻² M/s","B. 3,2 × 10⁻² M/s","C. 6,4 × 10⁻² M/s","D. 1,2 × 10⁻² M/s"],correct_answer:"B. 3,2 × 10⁻² M/s",explanation:"ΔT = 30 °C (3x kenaikan). v = 4 × 10⁻³ × 2³ = 3,2 × 10⁻² M/s."},
+      {q_id:"l-002",chapter_ref:"bab-4",type:"pg",topic:"Teori Tumbukan",question_text:"Katalis dapat mempercepat reaksi karena katalis...",options:["A. Menaikkan energi kinetik molekul","B. Menaikkan suhu reaksi","C. Menurunkan energi aktivasi","D. Menggeser kesetimbangan"],correct_answer:"C. Menurunkan energi aktivasi",explanation:"Katalis memberikan jalur alternatif dengan Energi Aktivasi (Ea) lebih rendah."},
+      /* BAB 5 */
+      {q_id:"i-001",chapter_ref:"bab-5",type:"pg",topic:"Kepolaran",question_text:"Molekul berikut yang bersifat nonpolar meskipun memiliki ikatan polar adalah...",options:["A. H₂O","B. NH₃","C. CO₂","D. HCl"],correct_answer:"C. CO₂",explanation:"Bentuk CO₂ adalah linear dan simetris, sehingga resultan dipolnya nol."},
+      {q_id:"i-002",chapter_ref:"bab-5",type:"pg",topic:"Tata nama",question_text:"Senyawa dengan rumus struktur CH₃–CH(CH₃)–CH₂–CH₂–CH₃ bernama...",options:["A. 4-metilpentana","B. 2-metilpentana","C. 3-metilpentana","D. Heksana"],correct_answer:"B. 2-metilpentana",explanation:"Penomoran dimulai dari yang paling dekat dengan cabang (dari kiri)."},
+      /* BAB 6 */
+      {q_id:'q-kc-01',chapter_ref:'bab-6',type:'pg',topic:'Konsep Kesetimbangan',question_text:'Sistem reaksi dikatakan mencapai kesetimbangan dinamis apabila...',options:['A. Reaksi berhenti total','B. Jumlah mol reaktan = produk','C. Laju reaksi pembentukan produk = laju reaksi penguraiannya','D. Reaktan habis'],correct_answer:'C. Laju reaksi pembentukan produk = laju reaksi penguraiannya',explanation:'Kesetimbangan dinamis tercapai ketika laju reaksi ke kanan (v1) = laju reaksi ke kiri (v2).'},
+      {q_id:'q-kc-02',chapter_ref:'bab-6',type:'pg',topic:'Rumus Kc',question_text:'Reaksi: BiCl3(aq) + H2O(l) ⇌ BiOCl(s) + 2HCl(aq)\nRumus tetapan kesetimbangan (Kc) yang benar adalah...',options:['A. Kc = [BiOCl][HCl]² / [BiCl3][H2O]','B. Kc = [HCl]² / [BiCl3]','C. Kc = [BiCl3] / [HCl]²','D. Kc = [HCl] / [BiCl3]'],correct_answer:'B. Kc = [HCl]² / [BiCl3]',explanation:'Zat berwujud padat (s) dan cair (l) diabaikan. BiOCl(s) dan H2O(l) dicoret dari rumus.'},
+      {q_id:'q-kc-03',chapter_ref:'bab-6',type:'pg',topic:'Pergeseran (Suhu & Volume)',question_text:'N2(g) + 3H2(g) ⇌ 2NH3(g)  ΔH = -92 kJ\nAgar hasil amonia (NH3) maksimum, perlakuan yang tepat berdasarkan Asas Le Chatelier adalah...',options:['A. Suhu dinaikkan dan volume diperbesar','B. Suhu diturunkan dan tekanan diperbesar','C. Suhu dinaikkan dan tekanan diperkecil','D. Ditambah katalis'],correct_answer:'B. Suhu diturunkan dan tekanan diperbesar',explanation:'Reaksi ke kanan Eksoterm (ΔH negatif), jadi turunkan suhu. Koefisien kanan (2) lebih kecil dari kiri (4), jadi perbesar tekanan (perkecil volume) agar geser ke koefisien kecil.'}
     ]
   }
 };
@@ -383,6 +424,12 @@ function sup(c){return c>0?(c>1?c:'')+'+':c<0?(c<-1?-c:'')+'−':''}
 function toast(t){var el=$('#toast');el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){el.hidden=true},2400)}
 function para(t){return String(t).split(/\n{2,}/).map(function(p){return '<p>'+esc(p).replace(/\n/g,'<br>')+'</p>'}).join('')}
 function nuc(z,a,sym,ch){return '<span class="nuc-note"><span class="nuc-nums"><span>'+a+'</span><span>'+z+'</span></span><span class="nuc-sym">'+esc(sym)+(ch?'<sup>'+sup(ch)+'</sup>':'')+'</span></span>'}
+
+/* Numeric Formatters */
+function fnum(x,d){return (Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toString().replace('.',',').replace('-','−')}
+function supNum(e){var m={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};return String(e).split('').map(function(c){return m[c]||c}).join('')}
+function fsci(v){if(!(v>0))return '0';var e=Math.floor(Math.log10(v)),m=v/Math.pow(10,e);if(m>=9.995){m=1;e++}return fnum(m,2)+' × 10'+supNum(e)}
+function rangeField(id,label,min,max,step,val,unit){return '<div class="field" style="margin-bottom:12px"><label for="'+id+'">'+label+': <b id="'+id+'v"></b> '+unit+'</label><input class="range" id="'+id+'" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+val+'"></div>'}
 
 /* ---------- State ---------- */
 var custom=store('custom',{subs:[],questions:[]});
@@ -431,7 +478,7 @@ function normQuiz(arr){
   });
 }
 
-/* ---------- FIX KLIK DI CANVAS/IFRAME ---------- */
+/* FIX NAVIGASI HASH UNTUK CANVAS */
 document.addEventListener('click', function(e) {
   var a = e.target.closest('a');
   if (a && a.getAttribute('href') && a.getAttribute('href').startsWith('#')) {
@@ -511,7 +558,7 @@ function viewChapter(mats,c){
   h+='</div><div class="row"><a class="btn ghost" href="#beranda">← Kembali</a><a class="btn soft" href="#latihan-'+c.chapter_id+'">Latihan soal bab ini</a></div></div>';
   main.innerHTML=h;
 }
-function widgetLabel(t){return {flashcard:'Kartu interaktif',drag_and_drop:'Tarik & lepas',drag_drop:'Tarik & lepas',slider:'Penjelajah rumus',atom_simulation:'Simulasi Atom',energy_diagram:'Diagram Energi',kalorimeter:'Kalorimeter Virtual',rate_temp:'Simulasi Suhu',collision:'Simulasi Tumbukan'}[t]||'Interaktif'}
+function widgetLabel(t){return {flashcard:'Kartu interaktif',drag_and_drop:'Tarik & lepas',drag_drop:'Tarik & lepas',slider:'Penjelajah rumus',atom_simulation:'Simulasi Atom',energy_diagram:'Diagram Energi',kalorimeter:'Kalorimeter Virtual',bond_calc:'Kalkulator Ikatan',orde_lab:'Lab Orde Reaksi',rate_temp:'Simulasi Suhu',collision:'Simulasi Tumbukan'}[t]||'Interaktif'}
 
 function viewSub(mats,fs,i){
   var x=fs[i],s=x.s,c=x.c,prev=fs[i-1],next=fs[i+1],isDone=!!prog.done[s.sub_id];
@@ -527,23 +574,26 @@ function viewSub(mats,fs,i){
   var wb=$('#wbody');if(wb)mountWidget(wb,s);
 }
 
+/* PENENTUAN WIDGET LENGKAP */
 function mountWidget(root,s){
   var t=s.type,d=s.data||{};
   if(t==='atom_simulation'||t==='atom')return mountAtom(root);
-  if(t==='drag_and_drop'&&!s.custom)return mountNaCl(root);
+  if(t==='drag_and_drop'&&!s.custom&&s.sub_id==='sub-2-1')return mountNaCl(root);
+  if(t==='flashcard'&&!s.custom&&s.sub_id==='sub-1-2')return mountFlash(root,defaultDeck());
   if(t==='energy_diagram')return mountEnergy(root);
   if(t==='kalorimeter')return mountKalor(root);
-  if(t==='rate_temp')return mountRateTemp(root);
+  if(t==='bond_calc')return mountBond(root,d);
+  if(t==='orde_lab')return mountOrde(root);
   if(t==='collision')return mountCollision(root);
+  if(t==='rate_temp')return mountRateTemp(root);
   
-  if(t==='flashcard'&&!s.custom&&s.sub_id==='sub-1-2')return mountFlash(root,defaultDeck());
   if(t==='flashcard'){var cards=cardsFrom(d,s.content);return cards.length?mountFlash(root,cards):mountSteps(root,s.content)}
   if(t==='drag_drop'||t==='drag_and_drop'){var pr=pairsFrom(d,s.content);return pr.length>=2?mountMatch(root,pr):mountSteps(root,s.content)}
   if(t==='slider'){return mountSlider(root,d,s.content)}
-  root.innerHTML=t==='none'?'<p class="muted">Tidak ada widget interaktif untuk subbab ini.</p>':'<p class="muted">Simulasi tidak disetel dengan baik.</p>';
+  root.innerHTML=t==='none'?'<p class="muted">Tidak ada widget interaktif untuk subbab ini.</p>':'<p class="muted">Simulasi belum disetel dengan baik.</p>';
 }
 
-/* Helper Parsers */
+/* Helper Parser */
 function cardsFrom(d,content){
   var arr=Array.isArray(d)?d:(d&&d.cards)||null;
   if(arr)return arr.filter(function(c){return c&&(c.front||c.depan)&&(c.back||c.belakang)}).map(function(c){return {front:'<div class="fc-text">'+esc(c.front||c.depan)+'</div>',back:'<div class="fc-text">'+esc(c.back||c.belakang)+'</div>',hint:'Tebak jawabannya'}});
@@ -556,7 +606,18 @@ function pairsFrom(d,content){
   return pairsFromText(content);
 }
 
-/* WIDGETS */
+/* =========================================
+   SIMULASI WIDGET PENUH BERGAMBAR
+========================================= */
+
+/* 1. Flashcard */
+function defaultDeck(){
+  var D=[[3,7,0],[6,12,0],[8,16,0],[11,23,0],[17,35,0],[11,23,1],[17,35,-1]];
+  return D.map(function(d){
+    var z=d[0],a=d[1],c=d[2],sym=SYM[z-1],e=z-c;
+    return {front:nuc(z,a,sym,c)+'',back:'<div class="fc-text">'+esc(NAME[z-1])+(c?' ('+(c>0?'kation':'anion')+')':'')+'</div><div class="tri"><span><b>'+z+'</b>proton</span><span><b>'+(a-z)+'</b>neutron</span><span><b>'+e+'</b>elektron</span></div>',hint:'Tebak: unsur, proton, neutron, elektron'};
+  });
+}
 function mountFlash(root,items){
   var i=0,flip=false,known={};
   root.innerHTML='<div class="fc-wrap"><button class="fc" id="fc" aria-label="Kartu. Tekan untuk membalik"><span class="fc-in"><span class="face front" id="ff"></span><span class="face back" id="fb"></span></span></button><div class="dots" id="fd" aria-hidden="true"></div><div class="muted" style="font-size:13px" id="fn" aria-live="polite"></div><div class="row" style="justify-content:center"><button class="btn ghost small" id="fp">← Sebelumnya</button><button class="btn small" id="ft">Balik kartu</button><button class="btn ghost small" id="fx">Berikutnya →</button></div><div class="row" style="justify-content:center"><button class="btn soft small" id="fk"></button></div></div>';
@@ -579,6 +640,7 @@ function mountFlash(root,items){
   draw();
 }
 
+/* 2. Drag and Drop / Match */
 function mountMatch(root,pairs){
   var order=shuffle(pairs.map(function(_,i){return i})),zoneOrder=shuffle(pairs.map(function(_,i){return i})),placed={},sel=null;
   root.innerHTML='<div class="match"><div><div class="muted" style="font-size:13px;margin-bottom:8px">Istilah/Reaksi (tarik, atau klik lalu klik tempatnya)</div><div class="chips" id="mc"></div></div><div class="zones" id="mz"></div></div><div class="row" style="margin-top:16px"><span class="chip" id="mp"></span><button class="btn ghost small" id="mr">Acak ulang</button></div>';
@@ -597,6 +659,7 @@ function mountMatch(root,pairs){
   draw();
 }
 
+/* 3. Slider */
 function mountSlider(root,d,content){
   var st=d&&Array.isArray(d.states)?d.states:null;
   if(!st||d.min==null||d.max==null)return mountSteps(root,content,d&&d.steps);
@@ -606,6 +669,7 @@ function mountSlider(root,d,content){
   $('#rg',root).addEventListener('input',upd);upd();
 }
 
+/* 4. Steps (Slider Text) */
 function mountSteps(root,content,list){
   var sents=list&&list.length?list:String(content).split(/(?<=[.!?])\s+/).filter(function(s){return s.trim().length>2});
   if(sents.length<2){root.innerHTML='<p class="muted">Belum ada data interaktif untuk subbab ini.</p>';return}
@@ -614,35 +678,238 @@ function mountSteps(root,content,list){
   $('#rg',root).addEventListener('input',upd);upd();
 }
 
-function defaultDeck(){
-  var D=[[3,7,0],[6,12,0],[8,16,0],[11,23,0],[17,35,0],[11,23,1],[17,35,-1]];
-  return D.map(function(d){
-    var z=d[0],a=d[1],c=d[2],sym=SYM[z-1],e=z-c;
-    return {front:nuc(z,a,sym,c)+'',back:'<div class="fc-text">'+esc(NAME[z-1])+(c?' ('+(c>0?'kation':'anion')+')':'')+'</div><div class="tri"><span><b>'+z+'</b>proton</span><span><b>'+(a-z)+'</b>neutron</span><span><b>'+e+'</b>elektron</span></div>',hint:'Tebak: unsur, proton, neutron, elektron'};
-  });
-}
-
+/* 5. Atom Simulation (Kembali Utuh) */
 function mountAtom(root){
-  root.innerHTML='<div class="msg ok">Simulasi Atom berhasil dimuat (Tampilan disederhanakan). Proton menentukan Identitas, Elektron menentukan Muatan.</div>';
+  var LIM={p:20,n:24,e:24},S={p:6,n:6,e:6},tip='Karbon-12: 6 proton, 6 neutron, 6 elektron. Coba ubah angkanya!',els=[],raf=0,t0=performance.now();
+  root.innerHTML='<div class="atom"><div class="atom-stage"><svg class="atom-svg" viewBox="0 0 360 360" role="img" aria-label="Model atom Bohr"><g id="aSh"></g><g id="aNu"></g><g id="aEl"></g></svg></div><div><div class="atom-id" id="aId"></div><div class="ctrls" id="aCt"></div><div class="note" id="aNote" aria-live="polite"></div><div class="presets" id="aPre"></div></div></div>';
+  var K=[['p','Proton','+','var(--accent)'],['n','Neutron','netral','var(--neutron)'],['e','Elektron','−','var(--secondary)']];
+  $('#aCt',root).innerHTML=K.map(function(k){return '<div class="ctrl"><span class="sw" style="background:'+k[3]+'"></span><span class="nm">'+k[1]+'<small>'+k[2]+'</small></span><button class="round" data-k="'+k[0]+'" data-d="-1" aria-label="Kurangi '+k[1]+'">−</button><output id="v-'+k[0]+'" aria-live="polite"></output><button class="round" data-k="'+k[0]+'" data-d="1" aria-label="Tambah '+k[1]+'">+</button></div>'}).join('');
+  var PRE=[['Hidrogen',[1,0,1]],['Karbon-12',[6,6,6]],['Natrium',[11,12,11]],['Ion Na⁺',[11,12,10]],['Ion Cl⁻',[17,18,18]],['Isotop C-14',[6,8,6]]];
+  $('#aPre',root).innerHTML=PRE.map(function(p,i){return '<button class="btn ghost small" data-pre="'+i+'">'+p[0]+'</button>'}).join('');
+  root.addEventListener('click',function(ev){
+    var b=ev.target.closest('button');if(!b||!root.contains(b))return;
+    if(b.dataset.k){var k=b.dataset.k,d=+b.dataset.d,old=S[k];S[k]=Math.max(0,Math.min(LIM[k],S[k]+d));if(S[k]!==old)tip=tipFor(k,d);update()}
+    else if(b.dataset.pre){var p=PRE[+b.dataset.pre];S.p=p[1][0];S.n=p[1][1];S.e=p[1][2];tip='Preset: '+p[0]+'.';update()}
+  });
+  function tipFor(k,d){
+    if(k==='p')return d>0?'Proton bertambah, nomor atom naik, jadi unsurnya berganti! Muatan ikut berubah karena elektron tetap.':'Proton berkurang: identitas unsur berubah.';
+    if(k==='n')return 'Neutron berubah: nomor massa ikut berubah, unsurnya tetap sama. Ini yang disebut isotop.';
+    return d>0?'Elektron bertambah: atom mendapat muatan negatif (anion) bila melebihi proton.':'Elektron berkurang: atom menjadi bermuatan positif (kation).';
+  }
+  function shells(e){var cap=[2,8,8,8],o=[],r=e;for(var i=0;i<cap.length&&r>0;i++){var k=Math.min(cap[i],r);o.push(k);r-=k}return o}
+  function update(){
+    var P=S.p,N=S.n,E=S.e,A=P+N,ch=P-E,sym=P>0?SYM[P-1]:'?',nm=P>0?NAME[P-1]:'Belum ada unsur';
+    ['p','n','e'].forEach(function(k){$('#v-'+k,root).textContent=S[k];$$('[data-k="'+k+'"]',root).forEach(function(b){b.disabled=(+b.dataset.d<0&&S[k]<=0)||(+b.dataset.d>0&&S[k]>=LIM[k])})});
+    var cls=ch>0?'pos':ch<0?'neg':'neu',st=P===0?'Tanpa proton':ch===0?'Atom netral':ch>0?'Ion positif (kation)':'Ion negatif (anion)';
+    var sh=shells(E),extra='';
+    if(P>0&&N!==NCOM[P-1])extra=' <span class="chip">Isotop '+sym+'-'+A+'</span>';
+    $('#aId',root).innerHTML='<div class="big">'+nuc(P,A,sym,ch)+'</div><div><div style="font-weight:600;color:var(--strong);font-size:17px">'+esc(nm)+'</div><div class="row" style="gap:6px;margin-top:6px"><span class="chip '+cls+'">'+st+(ch?' ('+sup(ch)+')':'')+'</span>'+extra+'</div><div class="muted" style="font-size:12.5px;margin-top:6px">Nomor atom '+P+' · Nomor massa '+A+' · Konfigurasi '+(sh.join('.')||'-')+'</div></div>';
+    var msg=tip;
+    if(P===0)msg='Tambahkan proton dulu. Jumlah proton menentukan unsur apa yang terbentuk.';
+    else if(P>0&&ch===0&&E>0&&!extra)msg=tip+' Proton = elektron, jadi atomnya netral.';
+    $('#aNote',root).textContent=msg;
+    drawAtom(sh);
+  }
+  function drawAtom(sh){
+    var R=[68,100,132,160],g='';
+    for(var i=0;i<4;i++)g+='<circle class="ring-line'+(i<sh.length?' used':'')+'" cx="180" cy="180" r="'+R[i]+'"/>';
+    $('#aSh',root).innerHTML=g;
+    var tot=S.p+S.n,rr=tot<=12?7.5:tot<=28?5.8:4.8,gap=rr*1.85,n='';
+    if(!tot)n='<circle cx="180" cy="180" r="14" fill="none" stroke="var(--neutron)" stroke-dasharray="3 4"/>';
+    for(var j=0;j<tot;j++){
+      var isP=Math.floor((j+1)*S.p/tot)>Math.floor(j*S.p/tot);
+      var a=j*2.39996,rad=tot===1?0:gap*Math.sqrt(j+.4),x=180+rad*Math.cos(a),y=180+rad*Math.sin(a);
+      n+='<circle class="'+(isP?'pn-p':'pn-n')+'" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+rr+'" stroke="var(--card-2)" stroke-width="1"/>';
+      if(isP&&rr>=7)n+='<text class="pn-txt" x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'">+</text>';
+    }
+    $('#aNu',root).innerHTML=n;
+    var eh='';els=[];
+    sh.forEach(function(cnt,si){for(var k=0;k<cnt;k++)els.push({r:R[si],a0:2*Math.PI*k/cnt+si*.5,sp:[.9,.6,.45,.35][si]*(si%2?-1:1)})});
+    els.forEach(function(o,i){eh+='<circle class="en" id="el'+i+'" cx="'+(180+o.r*Math.cos(o.a0)).toFixed(1)+'" cy="'+(180+o.r*Math.sin(o.a0)).toFixed(1)+'" r="5.5" stroke="var(--card-2)" stroke-width="1.5"/>'});
+    $('#aEl',root).innerHTML=eh;
+    els.forEach(function(o,i){o.node=$('#el'+i,root)});
+  }
+  function tick(now){
+    if(!root.isConnected)return;
+    var t=(now-t0)/1000;
+    for(var i=0;i<els.length;i++){var o=els[i],a=o.a0+t*o.sp;o.node.setAttribute('cx',(180+o.r*Math.cos(a)).toFixed(1));o.node.setAttribute('cy',(180+o.r*Math.sin(a)).toFixed(1))}
+    raf=requestAnimationFrame(tick);
+  }
+  update();
+  if(!reduceMotion)raf=requestAnimationFrame(tick);
 }
+
+/* 6. Simulasi Tarik Lepas NaCl (Kembali Utuh) */
 function mountNaCl(root){
-  root.innerHTML='<div class="msg ok">Simulasi Tarik Lepas NaCl berhasil dimuat. Ion Positif dan Negatif tarik menarik kuat.</div>';
+  var NA={x:150,y:150},CL={x:490,y:150},START={x:NA.x+80,y:NA.y},SLOT={x:CL.x-80,y:CL.y},done=false,dragging=false;
+  function ring(cx,cy,r,n,skip,cls,off){var s='';for(var k=0;k<n;k++){var a=(off||0)+2*Math.PI*k/n;s+='<circle class="'+cls+'" cx="'+(cx+r*Math.cos(a)).toFixed(1)+'" cy="'+(cy+r*Math.sin(a)).toFixed(1)+'" r="6"/>'}return s}
+  var clOuter='';for(var k=0;k<8;k++){if(k===4)continue;var a=Math.PI*k/4;clOuter+='<circle class="ev" cx="'+(CL.x+80*Math.cos(a)).toFixed(1)+'" cy="'+(CL.y+80*Math.sin(a)).toFixed(1)+'" r="6"/>'}
+  root.innerHTML='<svg id="ns" class="nacl-svg" viewBox="0 0 640 300" role="group" aria-label="Atom Na dan Cl"><g>'
+   +'<circle class="ring-line" cx="150" cy="150" r="32"/><circle class="ring-line" cx="150" cy="150" r="56"/><circle id="naR3" class="ring-line" cx="150" cy="150" r="80"/>'
+   +'<circle class="ring-line" cx="490" cy="150" r="32"/><circle class="ring-line" cx="490" cy="150" r="56"/><circle class="ring-line" cx="490" cy="150" r="80"/>'
+   +'<circle class="nuc-c" cx="150" cy="150" r="22"/><text class="lbl" x="150" y="146">Na</text><text class="lbl2" style="fill:#fff;opacity:.85;font-size:10px" x="150" y="160">11+</text>'
+   +'<circle class="nuc-cl" cx="490" cy="150" r="22"/><text class="lbl" x="490" y="146" style="fill:#083344">Cl</text><text class="lbl2" style="fill:#083344;font-size:10px" x="490" y="160">17+</text>'
+   +ring(150,150,32,2,0,'ev',0)+ring(150,150,56,8,0,'ev',0.3)+ring(490,150,32,2,0,'ev',0)+ring(490,150,56,8,0,'ev',0.3)+clOuter
+   +'<circle class="slot" id="slot" cx="'+SLOT.x+'" cy="'+SLOT.y+'" r="9"/>'
+   +'<text class="lbl2" x="150" y="262">Natrium · 2.8.1</text><text class="lbl2" x="490" y="262">Klorin · 2.8.7</text>'
+   +'<g id="after" hidden><text class="charge p" x="150" y="38">Na<tspan dy="-7" font-size="13">+</tspan></text><text class="charge n" x="490" y="38">Cl<tspan dy="-7" font-size="13">−</tspan></text><path class="bond" d="M 250 150 L 390 150"/><text class="bond-t" x="320" y="136">Ikatan Ion NaCl</text></g>'
+   +'<g id="el" class="drag" tabindex="0" role="button" aria-label="Elektron valensi Na. Tarik ke celah kosong di Cl, atau tekan Enter." style="transform:translate('+START.x+'px,'+START.y+'px)"><circle class="halo" r="14"/><circle class="ed" r="7"/></g></g></svg>'
+   +'<div class="note" id="nn" style="margin-top:14px" aria-live="polite"></div><div class="cfg" id="cf"></div><div class="row" style="margin-top:14px"><button class="btn soft small" id="nAuto">Pindahkan otomatis</button><button class="btn ghost small" id="nReset">Ulangi</button></div>';
+  var svg=$('#ns',root),el=$('#el',root);
+  function setPos(x,y){el.style.transform='translate('+x+'px,'+y+'px)'}
+  function pt(e){var p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse())}
+  function info(){
+    $('#nn',root).textContent=done?'Na melepas 1 elektron lalu menjadi Na⁺, konfigurasinya 2.8. Cl menerima elektron itu lalu menjadi Cl⁻, konfigurasinya 2.8.8. Terjadilah Ikatan Ion.':'Na punya 1 elektron valensi, Cl punya 7. Tarik elektron merah Na ke celah Cl!';
+    $('#cf',root).innerHTML=done?'<div><b>Na⁺</b><br>Muatan +1 · stabil</div><div><b>Cl⁻</b><br>Muatan −1 · stabil</div>':'<div><b>Na</b><br>Cenderung melepas</div><div><b>Cl</b><br>Cenderung menerima</div>';
+  }
+  function finish(){
+    done=true;setPos(SLOT.x,SLOT.y);el.classList.remove('dragging');el.removeAttribute('tabindex');el.setAttribute('role','img');el.setAttribute('aria-label','Berpindah ke Cl');
+    $('#el',root).querySelector('.halo').style.display='none';
+    $('#ed',root);var d=el.querySelector('.ed');d.setAttribute('class','ev');
+    $('#slot',root).style.display='none';$('#naR3',root).style.strokeDasharray='3 5';$('#after',root).hidden=false;
+    $('#nAuto',root).disabled=true;info();toast('Ikatan ion terbentuk!');
+  }
+  el.addEventListener('pointerdown',function(e){if(done)return;dragging=true;try{el.setPointerCapture(e.pointerId)}catch(x){}el.classList.add('dragging');e.preventDefault()});
+  el.addEventListener('pointermove',function(e){if(!dragging)return;var p=pt(e);setPos(Math.max(10,Math.min(630,p.x)),Math.max(10,Math.min(290,p.y)))});
+  function drop(e,cancel){if(!dragging)return;dragging=false;el.classList.remove('dragging');var p=pt(e);if(!cancel&&Math.hypot(p.x-SLOT.x,p.y-SLOT.y)<55)finish();else{setPos(START.x,START.y);if(!cancel)$('#nn',root).textContent='Belum pas. Tarik ke garis putus-putus.'}}
+  el.addEventListener('pointerup',function(e){drop(e,false)});
+  el.addEventListener('pointercancel',function(e){drop(e,true)});
+  $('#nAuto',root).addEventListener('click',function(){if(!done)finish()});
+  $('#nReset',root).addEventListener('click',function(){mountNaCl(root)});
+  info();
 }
+
+/* 7. Diagram Energi (Kembali Utuh) */
 function mountEnergy(root){
-  root.innerHTML='<div class="msg ok">Diagram Energi dimuat. Produk lebih rendah = Eksoterm. Produk lebih tinggi = Endoterm.</div>';
+  var R=80,P=30;
+  root.innerHTML='<div class="atom"><div class="atom-stage"><svg class="atom-svg" viewBox="0 0 360 280" role="img" aria-label="Diagram tingkat energi reaksi"><line x1="40" y1="16" x2="40" y2="256" stroke="var(--muted)" stroke-width="1.5"/><text x="16" y="136" transform="rotate(-90 16 136)" style="fill:var(--muted);font-size:12px;text-anchor:middle">Entalpi (H)</text><g id="eg"></g></svg></div><div>'
+   +rangeField('eR','Entalpi reaktan (H₁)',10,100,5,R,'kJ')+rangeField('eP','Entalpi produk (H₂)',10,100,5,P,'kJ')
+   +'<div class="row" id="eChips" style="margin:6px 0 12px"></div><div class="note" id="eNote" aria-live="polite"></div></div></div>';
+  function y(h){return 256-h*2.3}
+  function draw(){
+    var dH=P-R,exo=dH<0,col=dH===0?'var(--muted)':exo?'var(--accent)':'var(--secondary)',inkc=dH===0?'var(--muted)':exo?'var(--accent-ink)':'var(--secondary-ink)';
+    var g='<line x1="70" y1="'+y(R)+'" x2="150" y2="'+y(R)+'" stroke="var(--strong)" stroke-width="3" stroke-linecap="round"/><text x="110" y="'+(y(R)-8)+'" style="fill:var(--text);font-size:12px;text-anchor:middle">Reaktan</text>'
+     +'<line x1="230" y1="'+y(P)+'" x2="310" y2="'+y(P)+'" stroke="var(--strong)" stroke-width="3" stroke-linecap="round"/><text x="270" y="'+(y(P)-8)+'" style="fill:var(--text);font-size:12px;text-anchor:middle">Produk</text>'
+     +'<line x1="150" y1="'+y(R)+'" x2="230" y2="'+y(P)+'" stroke="var(--line)" stroke-dasharray="4 4"/>';
+    if(dH!==0){var a=y(R),b=y(P),dir=b>a?1:-1;g+='<line x1="190" y1="'+a+'" x2="190" y2="'+(b-dir*8)+'" stroke="'+col+'" stroke-width="3"/><polygon points="190,'+b+' 184,'+(b-dir*11)+' 196,'+(b-dir*11)+'" fill="'+col+'"/><text x="200" y="'+((a+b)/2+4)+'" style="fill:'+inkc+';font-size:13px;font-weight:700">ΔH = '+(dH>0?'+':'−')+Math.abs(dH)+'</text>'}
+    $('#eg',root).innerHTML=g;
+  }
+  function upd(){
+    R=+$('#eR',root).value;P=+$('#eP',root).value;$('#eRv',root).textContent=R;$('#ePv',root).textContent=P;
+    var dH=P-R,k=dH<0?'neu':dH>0?'neg':'';
+    $('#eChips',root).innerHTML='<span class="chip '+(dH<0?'pos':dH>0?'neg':'')+'">'+(dH<0?'Eksoterm':dH>0?'Endoterm':'Tidak ada perubahan entalpi')+'</span><span class="chip">ΔH = '+(dH>0?'+':dH<0?'−':'')+Math.abs(dH)+' kJ</span>'+(dH?'<span class="chip">Suhu lingkungan '+(dH<0?'naik':'turun')+'</span>':'');
+    $('#eNote',root).textContent=dH<0?'Produk berenergi lebih rendah, jadi sistem melepas kalor ke lingkungan (Eksoterm).':dH>0?'Produk berenergi lebih tinggi, jadi sistem menyerap kalor dari lingkungan (Endoterm).':'Tidak ada kalor yang dilepas atau diserap.';
+    draw();
+  }
+  $('#eR',root).addEventListener('input',upd);$('#eP',root).addEventListener('input',upd);upd();
 }
+
+/* 8. Kalorimeter (Kembali Utuh) */
 function mountKalor(root){
-  root.innerHTML='<div class="msg ok">Simulator Kalorimetri dimuat. Hitung suhu akhir dengan rumus q = m × c × ΔT.</div>';
+  root.innerHTML='<div class="atom"><div>'+rangeField('kV','Volume tiap larutan (HCl & NaOH)',50,200,25,100,'mL')+rangeField('kM','Konsentrasi larutan',0.5,2,0.5,1,'M')+rangeField('kT','Kenaikan suhu (ΔT)',0.5,15,0.1,6.7,'°C')+'<p class="muted" style="font-size:13px">Anggap c = 4,18 J g⁻¹ °C⁻¹ dan massa jenis 1 g/mL.</p></div><div><div class="cfg" id="kSteps" style="margin:0 0 12px;grid-template-columns:1fr"></div><div class="note" id="kNote" aria-live="polite"></div></div></div>';
+  function upd(){
+    var V=+$('#kV',root).value,M=+$('#kM',root).value,dT=+$('#kT',root).value;
+    $('#kVv',root).textContent=V;$('#kMv',root).textContent=fnum(M,1);$('#kTv',root).textContent=fnum(dT,1);
+    var m=2*V,q=m*4.18*dT,n=M*V/1000,dH=-(q/1000)/n;
+    $('#kSteps',root).innerHTML='<div><b>1. Massa larutan</b><br>m = ('+V+'+'+V+') mL = '+m+' g</div><div><b>2. Kalor yang diserap</b><br>q = '+m+' × 4,18 × '+fnum(dT,1)+' = '+fnum(q,0)+' J = '+fnum(q/1000,2)+' kJ</div><div><b>3. Entalpi penetralan</b><br>ΔH = −q ÷ n = <b style="color:var(--accent-ink)">'+fnum(dH,1)+' kJ/mol</b></div>';
+    $('#kNote',root).textContent='Nilai literatur penetralan kuat sekitar −57 kJ/mol. Coba atur slider hingga hasilnya mendekati nilai tersebut!';
+  }
+  ['kV','kM','kT'].forEach(function(id){$('#'+id,root).addEventListener('input',upd)});upd();
 }
-function mountRateTemp(root){
-  root.innerHTML='<div class="msg ok">Suhu naik = Energi kinetik naik. Jumlah tumbukan efektif meningkat tajam.</div>';
+
+/* 9. Kalkulator Ikatan (Kembali Utuh) */
+function mountBond(root,d){
+  var rx=(d&&d.reactions)||[],cur=0;
+  if(!rx.length){root.innerHTML='<p class="muted">Data belum tersedia.</p>';return}
+  root.innerHTML='<div class="presets" id="bPre" style="margin:0 0 14px"></div><div class="cfg" id="bTab" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:0"></div><div class="note" id="bNote" style="margin-top:14px" aria-live="polite"></div>';
+  function draw(){
+    var r=rx[cur],sum=function(a){return a.reduce(function(t,x){return t+x[1]*x[2]},0)},sb=sum(r['break']),sf=sum(r.form),dH=sb-sf;
+    $('#bPre',root).innerHTML=rx.map(function(x,i){return '<button class="btn small '+(i===cur?'':'ghost')+'" data-r="'+i+'" aria-pressed="'+(i===cur)+'">'+esc(x.name)+'</button>'}).join('');
+    var li=function(a){return a.map(function(x){return esc(x[0])+': '+x[1]+' × '+x[2]+' = '+(x[1]*x[2])+' kJ'}).join('<br>')};
+    $('#bTab',root).innerHTML='<div><b>Ikatan putus (butuh energi)</b><br>'+li(r['break'])+'<br><b>Σ = '+sb+' kJ</b></div><div><b>Ikatan terbentuk (melepas energi)</b><br>'+li(r.form)+'<br><b>Σ = '+sf+' kJ</b></div><div><b>ΔH reaksi</b><br>'+sb+' − '+sf+' = <b style="color:'+(dH<0?'var(--accent-ink)':'var(--secondary-ink)')+'">'+(dH>0?'+':'')+dH+' kJ</b><br>'+(dH<0?'Eksoterm':dH>0?'Endoterm':'ΔH nol')+'</div>';
+    $('#bNote',root).textContent=dH<0?'Reaksi eksoterm karena memutus ikatan pereaksi butuh energi yang lebih kecil dari yang dilepas produk.':'Reaksi endoterm karena butuh energi lebih besar untuk memutus ikatan reaktan.';
+  }
+  root.addEventListener('click',function(e){var b=e.target.closest('[data-r]');if(b){cur=+b.dataset.r;draw()}});
+  draw();
 }
+
+/* 10. Lab Orde Reaksi (Kembali Utuh) */
+function mountOrde(root){
+  var n=1,f=1;
+  root.innerHTML='<div class="atom"><div class="atom-stage"><svg class="atom-svg" viewBox="0 0 320 240" role="img" aria-label="Grafik laju" id="oSvg"></svg></div><div><div class="presets" id="oBtns" style="margin:0 0 14px"></div>'+rangeField('oF','Konsentrasi dikali',1,5,1,1,'kali')+'<div class="row" id="oChips" style="margin-bottom:12px"></div><div class="note" id="oNote" aria-live="polite"></div></div></div>';
+  function draw(){
+    var ymax=Math.max(1,Math.pow(5,n))*1.15,X=function(x){return 40+x/5*260},Y=function(v){return 200-v/ymax*180},pts=[];
+    for(var x=0;x<=5.001;x+=.25)pts.push(X(x).toFixed(1)+','+Y(Math.pow(x,n)).toFixed(1));
+    var cx=X(f),cy=Y(Math.pow(f,n));
+    $('#oSvg',root).innerHTML='<line x1="40" y1="200" x2="300" y2="200" stroke="var(--muted)"/><line x1="40" y1="20" x2="40" y2="200" stroke="var(--muted)"/><text x="170" y="228" style="fill:var(--muted);font-size:12px;text-anchor:middle">Konsentrasi [A] (kali)</text><text x="12" y="110" transform="rotate(-90 12 110)" style="fill:var(--muted);font-size:12px;text-anchor:middle">Laju (v)</text><polyline points="'+pts.join(' ')+'" fill="none" stroke="var(--primary)" stroke-width="3"/><line x1="'+cx+'" y1="'+cy+'" x2="'+cx+'" y2="200" stroke="var(--accent)" stroke-dasharray="4 4"/><circle cx="'+cx+'" cy="'+cy+'" r="7" fill="var(--accent)"/>';
+  }
+  function upd(){
+    f=+$('#oF',root).value;$('#oFv',root).textContent=f;
+    $('#oBtns',root).innerHTML=[0,1,2].map(function(k){return '<button class="btn small '+(k===n?'':'ghost')+'" data-n="'+k+'" aria-pressed="'+(k===n)+'">Orde '+k+'</button>'}).join('');
+    var fac=Math.pow(f,n),un=['M s⁻¹','s⁻¹','M⁻¹ s⁻¹'][n];
+    $('#oChips',root).innerHTML='<span class="chip pos">Laju menjadi '+fac+' kali</span><span class="chip">v = k[A]'+['⁰','','²'][n]+'</span>';
+    $('#oNote',root).textContent=n===0?'Orde nol: laju tidak berubah walau konsentrasi naik.':n===1?'Orde satu: konsentrasi naik 2x, laju naik 2x. Linear!':'Orde dua: konsentrasi naik 2x, laju naik 4x. Parabolik!';
+    draw();
+  }
+  root.addEventListener('click',function(e){var b=e.target.closest('[data-n]');if(b){n=+b.dataset.n;upd()}});
+  $('#oF',root).addEventListener('input',upd);upd();
+}
+
+/* 11. Simulasi Tumbukan (Kembali Utuh) */
 function mountCollision(root){
-  root.innerHTML='<div class="msg ok">Tumbukan efektif butuh energi minimum (Ea) dan arah (orientasi) yang tepat.</div>';
+  var W=400,H=240,rad=6,P=[],T=3,N=10,cat=false,raf=0,st={col:0,eff:0},cool={},EA=6;
+  root.innerHTML='<canvas class="coll" id="cv" width="'+W+'" height="'+H+'" style="display:block;width:100%;height:auto;background:var(--card-2);border:1px solid var(--line);border-radius:18px"></canvas><div class="row" id="cLeg" style="margin:10px 0;font-size:13px"><span class="chip neg">● A</span><span class="chip pos">● B</span><span class="chip neu">● Produk</span></div><div class="atom" style="align-items:start"><div>'+rangeField('cT','Suhu',1,5,1,T,'')+rangeField('cN','Jumlah partikel',4,20,2,N,'')+'<label class="row" style="gap:8px;margin-bottom:12px"><input type="checkbox" id="cK"> Tambahkan katalis</label><div class="row"><button class="btn ghost small" id="cR">Ulangi</button></div></div><div><div class="cfg" id="cSt" style="margin:0 0 10px;grid-template-columns:1fr 1fr"></div><div class="note" id="cNote" aria-live="polite"></div></div></div>';
+  var cv=$('#cv',root),ctx=cv.getContext('2d');
+  function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()||'#888'}
+  function spd(){return Math.sqrt(T)*1.4*(.5+Math.random())}
+  function mk(type){var a=Math.random()*6.283,s=spd();return {t:type,x:rad+Math.random()*(W-2*rad),y:rad+Math.random()*(H-2*rad),vx:Math.cos(a)*s,vy:Math.sin(a)*s}}
+  function reset(){P=[];cool={};st={col:0,eff:0};for(var i=0;i<N;i++){P.push(mk('A'));P.push(mk('B'))}panel()}
+  function panel(){
+    var prod=P.filter(function(p){return p.t==='P'}).length/2,pc=st.col?Math.round(st.eff*100/st.col):0;
+    $('#cSt',root).innerHTML='<div><b>'+st.col+'</b><br>tumbukan</div><div><b>'+st.eff+'</b><br>efektif ('+pc+'%)</div><div><b>'+prod+'</b><br>produk</div>';
+    $('#cNote',root).textContent='Tumbukan efektif butuh Ea. Naikkan suhu (energi naik), konsentrasi (tumbukan sering), atau tambahkan katalis (Ea turun).';
+  }
+  function step(){
+    var i,j,p,q;
+    for(i=0;i<P.length;i++){p=P[i];p.x+=p.vx;p.y+=p.vy;if(p.x<rad){p.x=rad;p.vx=Math.abs(p.vx)}if(p.x>W-rad){p.x=W-rad;p.vx=-Math.abs(p.vx)}if(p.y<rad){p.y=rad;p.vy=Math.abs(p.vy)}if(p.y>H-rad){p.y=H-rad;p.vy=-Math.abs(p.vy)}}
+    for(i=0;i<P.length;i++)for(j=i+1;j<P.length;j++){
+      p=P[i];q=P[j];if(p.t==='P'||q.t==='P'||p.t===q.t)continue;
+      var dx=p.x-q.x,dy=p.y-q.y;if(dx*dx+dy*dy>4*rad*rad)continue;
+      var key=i+'-'+j;if(cool[key]>0)continue;cool[key]=25;st.col++;
+      var rel=(p.vx-q.vx)*(p.vx-q.vx)+(p.vy-q.vy)*(p.vy-q.vy),ea=cat?EA*.45:EA;
+      if(rel>=ea&&Math.random()<.6){st.eff++;p.t='P';q.t='P';p.vx*=.5;p.vy*=.5;q.vx*=.5;q.vy*=.5}
+      else{var tx=p.vx,ty=p.vy;p.vx=q.vx;p.vy=q.vy;q.vx=tx;q.vy=ty}
+    }
+    for(var k in cool){if(cool[k]>0)cool[k]--}
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);var col={A:css('--secondary'),B:css('--accent'),P:css('--success')};
+    P.forEach(function(p){ctx.beginPath();ctx.arc(p.x,p.y,p.t==='P'?rad*.8:rad,0,6.283);ctx.fillStyle=col[p.t];ctx.fill()});
+  }
+  function loop(){if(!root.isConnected)return;step();draw();if(st.col!==loop.last){loop.last=st.col;panel()}raf=requestAnimationFrame(loop)}
+  ['cT','cN'].forEach(function(id){$('#'+id,root).addEventListener('input',function(){T=+$('#cT',root).value;N=+$('#cN',root).value;$('#cTv',root).textContent=T;$('#cNv',root).textContent=N;reset()})});
+  $('#cK',root).addEventListener('change',function(){cat=this.checked;reset()});
+  $('#cR',root).addEventListener('click',reset);
+  $('#cTv',root).textContent=T;$('#cNv',root).textContent=N;reset();draw();
+  if(!reduceMotion)raf=requestAnimationFrame(loop);
+}
+
+/* 12. Simulasi Laju vs Suhu (Kembali Utuh) */
+function mountRateTemp(root){
+  var cfg={n:2,X:10,T0:20,v0:0.004};
+  root.innerHTML='<div class="atom"><div>'+rangeField('rT','Suhu',cfg.T0,cfg.T0+80,5,cfg.T0,'°C')+'<div class="field" style="margin-bottom:12px"><label for="rN">Kelipatan laju tiap suhu naik:</label><div class="row"><select id="rN" style="width:auto"><option value="2">2 kali</option><option value="3">3 kali</option></select><select id="rX" style="width:auto"><option value="10">tiap naik 10 °C</option></select></div></div><p class="muted" style="font-size:13px">Laju awal ('+fsci(cfg.v0)+' M/s) diukur pada 20 °C.</p></div><div><div class="cfg" id="rSt" style="margin:0 0 12px;grid-template-columns:1fr"></div><div class="bar" role="img"><i id="rBar" style="width:0%"></i></div><div class="note" id="rNote" aria-live="polite" style="margin-top:12px"></div></div></div>';
+  function upd(){
+    var T=+$('#rT',root).value,n=+$('#rN',root).value,X=+$('#rX',root).value,dT=T-cfg.T0,k=dT/X,fac=Math.pow(n,k),v=cfg.v0*fac;
+    $('#rTv',root).textContent=T;
+    $('#rSt',root).innerHTML='<div><b>Kenaikan Suhu</b> = '+dT+' °C</div><div><b>Laju</b> = '+fsci(cfg.v0)+' × '+fnum(fac,2)+' = <b style="color:var(--accent-ink)">'+fsci(v)+' M/s</b></div>';
+    var maxF=Math.pow(n,80/X);$('#rBar',root).style.width=(fac<=1?2:Math.max(2,Math.log(fac)/Math.log(maxF)*100))+'%';
+    $('#rNote',root).textContent=dT===0?'Sama dengan laju awal.':'Laju menjadi '+fnum(fac,2)+' kali. Energi kinetik partikel lebih besar, banyak yang mencapai energi aktivasi!';
+  }
+  ['rT','rN','rX'].forEach(function(id){$('#'+id,root).addEventListener('input',upd)});upd();
 }
 
 
-/* ---------- Kuis ---------- */
+/* ---------- Evaluasi & Kuis ---------- */
 function qtype(q){return q.type||'pg'}
 function nl(t){return esc(t).replace(/\n/g,'<br>')}
 function isOk(q,v){
@@ -688,8 +955,8 @@ function viewQuiz(mats){
   var answered=L.filter(function(q){return prog.ans[q.q_id]}).length,wrong=wrongIds(L).length;
   var h='<div class="page"><div class="crumbs"><a href="#beranda">← Kembali ke Beranda</a></div><header><span class="kicker">Latihan soal</span><h1 class="title" style="margin-top:6px">'+esc(BASE.quiz.title)+'</h1><p class="muted" style="margin-top:8px;max-width:60ch">'+esc(BASE.quiz.description)+'</p></header>';
   h+='<div class="chips-row" role="group" aria-label="Pilih bab soal"><button class="fchip" data-f="all" aria-pressed="'+(quiz.filter==='all')+'">Semua bab</button>'+mats.map(function(c){return '<button class="fchip" data-f="'+c.chapter_id+'" aria-pressed="'+(quiz.filter===c.chapter_id)+'">'+esc(c.chapter_name.split(':')[0])+'</button>'}).join('')+'</div>';
-  h+='<div class="row" id="tb"><button class="btn ghost small" id="tShuf" aria-pressed="'+quiz.shuffle+'">'+(quiz.shuffle?'✓ ':'')+'Acak urutan</button><button class="btn ghost small" id="tWrong"'+(wrong?'':' disabled')+'>Ulangi yang salah'+(wrong?' ('+wrong+')':'')+'</button><button class="btn ghost small" id="tReset"'+(answered?'':' disabled')+'>Reset latihan</button><span class="muted" style="font-size:13px;margin-left:auto">'+answered+' dari '+n+' terjawab · tersimpan di perangkat ini</span></div>';
-  if(!n)h+='<div class="card empty">Belum ada soal untuk pilihan ini. Pilih bab lain, atau tambahkan soal lewat menu Tambah Materi.</div>';
+  h+='<div class="row" id="tb"><button class="btn ghost small" id="tShuf" aria-pressed="'+quiz.shuffle+'">'+(quiz.shuffle?'✓ ':'')+'Acak urutan</button><button class="btn ghost small" id="tWrong"'+(wrong?'':' disabled')+'>Ulangi yang salah'+(wrong?' ('+wrong+')':'')+'</button><button class="btn ghost small" id="tReset"'+(answered?'':' disabled')+'>Reset latihan</button><span class="muted" style="font-size:13px;margin-left:auto">'+answered+' dari '+n+' terjawab</span></div>';
+  if(!n)h+='<div class="card empty">Belum ada soal untuk pilihan ini. Pilih bab lain.</div>';
   else h+=navGrid()+(quiz.view==='r'?resultCard():questionCard());
   h+='</div>';
   main.innerHTML=h;
@@ -800,6 +1067,33 @@ function bindR(){
 }
 
 /* ---------- Admin / AI Generator ---------- */
+function processAIText(text){
+    var lines = text.split('\n');
+    var judul = "Materi AI Baru";
+    var isi = [];
+    var pas = [];
+    lines.forEach(l => {
+        if(l.includes(':') && l.length > 5) {
+            var parts = l.split(':');
+            pas.push({term: parts[0].trim(), match: parts[1].trim()});
+        }
+        if(l.trim().length > 10) isi.push(l.trim());
+    });
+    if(isi.length) judul = isi[0].substring(0, 30);
+    
+    var item = {
+        chapter_name: "Bab AI: Ekstra",
+        subtopic_title: judul,
+        content_text: text,
+        interactive_type: pas.length > 1 ? "drag_drop" : "none",
+        interactive_data: pas.length > 1 ? pas : null,
+        quiz_data: [
+            {question_text: "Pertanyaan otomatis AI:", options: ["A. Benar", "B. Salah"], correct_answer: "A. Benar", explanation: "Template simulasi dari teks mentah Anda."}
+        ]
+    };
+    return item;
+}
+
 function ingest(obj){
   var added=0,qadded=0,errs=[];
   var list=[];
@@ -821,57 +1115,20 @@ function ingest(obj){
       if(ty==='drag_and_drop')ty='drag_drop';
       if(['none','slider','flashcard','drag_drop','atom'].indexOf(ty)<0)throw new Error('Item #'+(i+1)+': interactive_type harus slider, flashcard, atau drag_drop.');
       var qz=it.quiz_data&&it.quiz_data.length?normQuiz(it.quiz_data):[];
-      custom.subs.push({id:'sub-u'+Date.now().toString(36)+i,chapter_name:String(cn),title:String(tt),content:String(ct),type:ty,instruction:it.instruction||defaultInstr(ty),data:it.interactive_data||null,quiz:qz});
+      custom.subs.push({id:'sub-u'+Date.now().toString(36)+i,chapter_name:String(cn),title:String(tt),content:String(ct),type:ty,instruction:it.instruction||'',data:it.interactive_data||null,quiz:qz});
       added++;qadded+=qz.length;
     }catch(e){errs.push(e.message)}
   });
   save();return {added:added,qadded:qadded,errs:errs};
 }
 
-function processAIText(text){
-    // Mockup sederhana pengubah .txt mentah menjadi flashcard/soal (Simulasi Prompt AI)
-    var lines = text.split('\n');
-    var judul = "Materi AI Baru";
-    var isi = [];
-    var pas = [];
-    lines.forEach(l => {
-        if(l.includes(':') && l.length > 5) {
-            var parts = l.split(':');
-            pas.push({term: parts[0].trim(), match: parts[1].trim()});
-        }
-        if(l.trim().length > 10) isi.push(l.trim());
-    });
-    if(isi.length) judul = isi[0].substring(0, 30);
-    
-    var item = {
-        chapter_name: "Bab AI: Materi Ekstra",
-        subtopic_title: judul,
-        content_text: text,
-        interactive_type: pas.length > 1 ? "drag_drop" : "none",
-        interactive_data: pas.length > 1 ? pas : null,
-        quiz_data: [
-            {
-                question_text: "Pertanyaan otomatis dari sistem AI:",
-                options: ["A. Benar", "B. Salah", "C. Mungkin", "D. Tidak Tahu"],
-                correct_answer: "A. Benar",
-                explanation: "Ini adalah template simulasi dari teks mentah Anda."
-            }
-        ]
-    };
-    return item;
-}
-
-function defaultInstr(t){return {slider:'Geser slider untuk menelusuri konsepnya.',flashcard:'Balik kartu untuk menguji ingatanmu.',drag_drop:'Pasangkan istilah dengan artinya.',none:''}[t]||''}
-
 function viewAdmin(mats){
   var names=mats.map(function(c){return '<option value="'+esc(c.chapter_name)+'">'}).join('');
   var h='<div class="page"><div class="crumbs"><a href="#beranda">← Kembali ke Beranda</a></div><header><span class="kicker">Mode admin & AI Generator</span><h1 class="title" style="margin-top:6px">Buat Materi Otomatis</h1><p class="muted" style="margin-top:8px;max-width:62ch">Unggah file teks/catatanmu, dan AI terintegrasi kami akan menyusunnya menjadi Flashcard, Drag & Drop, dan Kuis Pilihan Ganda secara otomatis.</p></header>';
   h+='<div id="amsg" role="status" aria-live="polite"></div>';
   
-  // AI Generator UI
   h+='<section class="card"><h2 style="font-size:18px;margin-bottom:6px">Upload Catatan Teks Mentah / JSON (.txt, .json)</h2><p class="muted" style="margin-bottom:14px;font-size:14px">Seret catatanmu ke sini, biarkan program yang menyusun jadi interaktif.</p><label class="drop" id="dz" for="fj" style="display:block;cursor:pointer">Seret file ke sini, atau klik untuk memilih<input type="file" id="fj" accept=".json,application/json,.txt,text/plain" class="sr"></label></section>';
 
-  // Manual Add Form
   h+='<section class="card"><h2 style="font-size:18px;margin-bottom:12px">Atau Tambah Manual</h2><form class="form" id="af" novalidate><div class="field"><label for="f-ch">Nama bab (chapter_name)</label><input type="text" id="f-ch" list="chl" placeholder="Bab 3: Stoikiometri" autocomplete="off"><datalist id="chl">'+names+'</datalist><small>Pilih bab yang ada, atau ketik nama baru untuk membuat bab baru.</small></div>'
    +'<div class="field"><label for="f-ti">Judul subbab (subtopic_title)</label><input type="text" id="f-ti" placeholder="Mol: Satuan Hitung Kimia" autocomplete="off"></div>'
    +'<div class="field"><label for="f-ct">Isi materi (content_text)</label><textarea id="f-ct" rows="6" placeholder="Tulis materi di sini. Pisahkan paragraf dengan baris kosong."></textarea></div>'
