@@ -5,7 +5,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* Layout: sidebar bab di kiri (drawer di ponsel), konten materi di kanan, widget simulasi tepat di bawah teks materi. */
 :root{
   --bg:#F8FAFC; --card:#FFFFFF; --card-2:#F1F5F9; --line:#E2E8F0;
   --text:#334155; --muted:#64748B; --strong:#1E293B;
@@ -170,10 +169,11 @@ sup,sub{line-height:0;font-size:.7em}
 .note{font-size:13.5px;background:var(--primary-soft);color:var(--text);border-radius:12px;padding:10px 14px;min-height:3.2em}
 .presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 
-/* Flashcard */
+/* Flashcard - Fixed for Webkit */
 .fc-wrap{display:flex;flex-direction:column;align-items:center;gap:18px}
-.fc{width:100%;max-width:440px;aspect-ratio:16/10;perspective:1200px;background:none;border:0;padding:0;border-radius:22px}
-.fc-in{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.3,.7,.2,1)}
+.fc{width:100%;max-width:440px;aspect-ratio:16/10;perspective:1200px;background:none;border:0;padding:0;border-radius:22px;cursor:pointer;outline:none}
+.fc:focus-visible{outline:3px solid var(--secondary);outline-offset:3px}
+.fc-in{display:block;position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.3,.7,.2,1)}
 .fc.flip .fc-in{transform:rotateY(180deg)}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;text-align:center;border:1px solid var(--line)}
 .face.front{background:var(--card);box-shadow:var(--shadow)}
@@ -429,7 +429,7 @@ function nuc(z,a,sym,ch){return '<span class="nuc-note"><span class="nuc-nums"><
 function fnum(x,d){return (Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toString().replace('.',',').replace('-','−')}
 function supNum(e){var m={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};return String(e).split('').map(function(c){return m[c]||c}).join('')}
 function fsci(v){if(!(v>0))return '0';var e=Math.floor(Math.log10(v)),m=v/Math.pow(10,e);if(m>=9.995){m=1;e++}return fnum(m,2)+' × 10'+supNum(e)}
-function rangeField(id,label,min,max,step,val,unit){return '<div class="field" style="margin-bottom:12px"><label for="'+id+'">'+label+': <b id="'+id+'v"></b> '+unit+'</label><input class="range" id="'+id+'" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+val+'"></div>'}
+function rangeField(id,label,min,max,step,val,unit){return '<div class="field"><label for="'+id+'">'+label+': <b id="'+id+'v"></b> '+unit+'</label><input class="range" id="'+id+'" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+val+'"></div>'}
 
 /* ---------- State ---------- */
 var custom=store('custom',{subs:[],questions:[]});
@@ -610,7 +610,7 @@ function pairsFrom(d,content){
    SIMULASI WIDGET PENUH BERGAMBAR
 ========================================= */
 
-/* 1. Flashcard */
+/* 1. Flashcard - DIPERBAIKI (Div + Keyboard Nav) */
 function defaultDeck(){
   var D=[[3,7,0],[6,12,0],[8,16,0],[11,23,0],[17,35,0],[11,23,1],[17,35,-1]];
   return D.map(function(d){
@@ -620,7 +620,7 @@ function defaultDeck(){
 }
 function mountFlash(root,items){
   var i=0,flip=false,known={};
-  root.innerHTML='<div class="fc-wrap"><button class="fc" id="fc" aria-label="Kartu. Tekan untuk membalik"><span class="fc-in"><span class="face front" id="ff"></span><span class="face back" id="fb"></span></span></button><div class="dots" id="fd" aria-hidden="true"></div><div class="muted" style="font-size:13px" id="fn" aria-live="polite"></div><div class="row" style="justify-content:center"><button class="btn ghost small" id="fp">← Sebelumnya</button><button class="btn small" id="ft">Balik kartu</button><button class="btn ghost small" id="fx">Berikutnya →</button></div><div class="row" style="justify-content:center"><button class="btn soft small" id="fk"></button></div></div>';
+  root.innerHTML='<div class="fc-wrap"><div class="fc" id="fc" tabindex="0" role="button" aria-label="Kartu interaktif. Tekan Enter untuk membalik"><span class="fc-in"><span class="face front" id="ff"></span><span class="face back" id="fb"></span></span></div><div class="dots" id="fd" aria-hidden="true"></div><div class="muted" style="font-size:13px" id="fn" aria-live="polite"></div><div class="row" style="justify-content:center"><button class="btn ghost small" id="fp">← Sebelumnya</button><button class="btn small" id="ft">Balik kartu</button><button class="btn ghost small" id="fx">Berikutnya →</button></div><div class="row" style="justify-content:center"><button class="btn soft small" id="fk"></button></div></div>';
   function draw(){
     var it=items[i];
     $('#ff',root).innerHTML=it.front+'<span class="hint">'+esc(it.hint||'')+'</span>';
@@ -633,6 +633,7 @@ function mountFlash(root,items){
   }
   function go(d){i=(i+d+items.length)%items.length;flip=false;draw()}
   $('#fc',root).addEventListener('click',function(){flip=!flip;draw()});
+  $('#fc',root).addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();flip=!flip;draw()}});
   $('#ft',root).addEventListener('click',function(){flip=!flip;draw()});
   $('#fp',root).addEventListener('click',function(){go(-1)});
   $('#fx',root).addEventListener('click',function(){go(1)});
@@ -664,7 +665,7 @@ function mountSlider(root,d,content){
   var st=d&&Array.isArray(d.states)?d.states:null;
   if(!st||d.min==null||d.max==null)return mountSteps(root,content,d&&d.steps);
   var min=+d.min,max=+d.max,unit=d.unit?' '+d.unit:'',label=d.label||'Nilai',val=+(d.start!=null?d.start:min);
-  root.innerHTML='<div class="field"><label for="rg">'+esc(label)+': <b id="rv"></b></label><input class="range" id="rg" type="range" min="'+min+'" max="'+max+'" step="'+(d.step||1)+'" value="'+val+'"></div><div class="note" id="rn" style="margin-top:14px" aria-live="polite"></div>';
+  root.innerHTML='<div class="field" style="margin-bottom:12px"><label for="rg">'+esc(label)+': <b id="rv"></b></label><input class="range" id="rg" type="range" min="'+min+'" max="'+max+'" step="'+(d.step||1)+'" value="'+val+'"></div><div class="note" id="rn" style="margin-top:14px" aria-live="polite"></div>';
   function upd(){var v=+$('#rg',root).value;$('#rv',root).textContent=v+unit;var t=st.filter(function(s){return v<=+s.upto})[0]||st[st.length-1];$('#rn',root).textContent=t?String(t.text):''}
   $('#rg',root).addEventListener('input',upd);upd();
 }
@@ -673,12 +674,12 @@ function mountSlider(root,d,content){
 function mountSteps(root,content,list){
   var sents=list&&list.length?list:String(content).split(/(?<=[.!?])\s+/).filter(function(s){return s.trim().length>2});
   if(sents.length<2){root.innerHTML='<p class="muted">Belum ada data interaktif untuk subbab ini.</p>';return}
-  root.innerHTML='<div class="field"><label for="rg">Geser untuk menelusuri langkahnya: Langkah <b id="rv"></b></label><input class="range" id="rg" type="range" min="1" max="'+sents.length+'" value="1"></div><ol class="steps" id="rs"></ol>';
+  root.innerHTML='<div class="field" style="margin-bottom:12px"><label for="rg">Geser untuk menelusuri langkahnya: Langkah <b id="rv"></b></label><input class="range" id="rg" type="range" min="1" max="'+sents.length+'" value="1"></div><ol class="steps" id="rs"></ol>';
   function upd(){var v=+$('#rg',root).value;$('#rv',root).textContent=v+' dari '+sents.length;$('#rs',root).innerHTML=sents.map(function(s,i){return '<li class="'+(i+1===v?'cur':i+1>v?'fut':'')+'">'+esc(s)+'</li>'}).join('')}
   $('#rg',root).addEventListener('input',upd);upd();
 }
 
-/* 5. Atom Simulation (Kembali Utuh) */
+/* 5. Atom Simulation */
 function mountAtom(root){
   var LIM={p:20,n:24,e:24},S={p:6,n:6,e:6},tip='Karbon-12: 6 proton, 6 neutron, 6 elektron. Coba ubah angkanya!',els=[],raf=0,t0=performance.now();
   root.innerHTML='<div class="atom"><div class="atom-stage"><svg class="atom-svg" viewBox="0 0 360 360" role="img" aria-label="Model atom Bohr"><g id="aSh"></g><g id="aNu"></g><g id="aEl"></g></svg></div><div><div class="atom-id" id="aId"></div><div class="ctrls" id="aCt"></div><div class="note" id="aNote" aria-live="polite"></div><div class="presets" id="aPre"></div></div></div>';
@@ -739,7 +740,7 @@ function mountAtom(root){
   if(!reduceMotion)raf=requestAnimationFrame(tick);
 }
 
-/* 6. Simulasi Tarik Lepas NaCl (Kembali Utuh) */
+/* 6. Simulasi Tarik Lepas NaCl */
 function mountNaCl(root){
   var NA={x:150,y:150},CL={x:490,y:150},START={x:NA.x+80,y:NA.y},SLOT={x:CL.x-80,y:CL.y},done=false,dragging=false;
   function ring(cx,cy,r,n,skip,cls,off){var s='';for(var k=0;k<n;k++){var a=(off||0)+2*Math.PI*k/n;s+='<circle class="'+cls+'" cx="'+(cx+r*Math.cos(a)).toFixed(1)+'" cy="'+(cy+r*Math.sin(a)).toFixed(1)+'" r="6"/>'}return s}
@@ -779,12 +780,12 @@ function mountNaCl(root){
   info();
 }
 
-/* 7. Diagram Energi (Kembali Utuh) */
+/* 7. Diagram Energi - DIPERBAIKI (Flexbox Layout) */
 function mountEnergy(root){
   var R=80,P=30;
-  root.innerHTML='<div class="atom"><div class="atom-stage"><svg class="atom-svg" viewBox="0 0 360 280" role="img" aria-label="Diagram tingkat energi reaksi"><line x1="40" y1="16" x2="40" y2="256" stroke="var(--muted)" stroke-width="1.5"/><text x="16" y="136" transform="rotate(-90 16 136)" style="fill:var(--muted);font-size:12px;text-anchor:middle">Entalpi (H)</text><g id="eg"></g></svg></div><div>'
+  root.innerHTML='<div class="atom"><div class="atom-stage" style="padding:16px 0"><svg class="atom-svg" viewBox="0 0 360 280" role="img" aria-label="Diagram tingkat energi reaksi"><line x1="40" y1="16" x2="40" y2="256" stroke="var(--muted)" stroke-width="1.5"/><text x="16" y="136" transform="rotate(-90 16 136)" style="fill:var(--muted);font-size:12px;text-anchor:middle">Entalpi (H)</text><g id="eg"></g></svg></div><div style="display:flex;flex-direction:column;gap:12px">'
    +rangeField('eR','Entalpi reaktan (H₁)',10,100,5,R,'kJ')+rangeField('eP','Entalpi produk (H₂)',10,100,5,P,'kJ')
-   +'<div class="row" id="eChips" style="margin:6px 0 12px"></div><div class="note" id="eNote" aria-live="polite"></div></div></div>';
+   +'<div class="row" id="eChips"></div><div class="note" id="eNote" aria-live="polite"></div></div></div>';
   function y(h){return 256-h*2.3}
   function draw(){
     var dH=P-R,exo=dH<0,col=dH===0?'var(--muted)':exo?'var(--accent)':'var(--secondary)',inkc=dH===0?'var(--muted)':exo?'var(--accent-ink)':'var(--secondary-ink)';
@@ -804,9 +805,9 @@ function mountEnergy(root){
   $('#eR',root).addEventListener('input',upd);$('#eP',root).addEventListener('input',upd);upd();
 }
 
-/* 8. Kalorimeter (Kembali Utuh) */
+/* 8. Kalorimeter */
 function mountKalor(root){
-  root.innerHTML='<div class="atom"><div>'+rangeField('kV','Volume tiap larutan (HCl & NaOH)',50,200,25,100,'mL')+rangeField('kM','Konsentrasi larutan',0.5,2,0.5,1,'M')+rangeField('kT','Kenaikan suhu (ΔT)',0.5,15,0.1,6.7,'°C')+'<p class="muted" style="font-size:13px">Anggap c = 4,18 J g⁻¹ °C⁻¹ dan massa jenis 1 g/mL.</p></div><div><div class="cfg" id="kSteps" style="margin:0 0 12px;grid-template-columns:1fr"></div><div class="note" id="kNote" aria-live="polite"></div></div></div>';
+  root.innerHTML='<div class="atom"><div style="display:flex;flex-direction:column;gap:12px">'+rangeField('kV','Volume tiap larutan (HCl & NaOH)',50,200,25,100,'mL')+rangeField('kM','Konsentrasi larutan',0.5,2,0.5,1,'M')+rangeField('kT','Kenaikan suhu (ΔT)',0.5,15,0.1,6.7,'°C')+'<p class="muted" style="font-size:13px">Anggap c = 4,18 J g⁻¹ °C⁻¹ dan massa jenis 1 g/mL.</p></div><div><div class="cfg" id="kSteps" style="margin:0 0 12px;grid-template-columns:1fr"></div><div class="note" id="kNote" aria-live="polite"></div></div></div>';
   function upd(){
     var V=+$('#kV',root).value,M=+$('#kM',root).value,dT=+$('#kT',root).value;
     $('#kVv',root).textContent=V;$('#kMv',root).textContent=fnum(M,1);$('#kTv',root).textContent=fnum(dT,1);
@@ -817,7 +818,7 @@ function mountKalor(root){
   ['kV','kM','kT'].forEach(function(id){$('#'+id,root).addEventListener('input',upd)});upd();
 }
 
-/* 9. Kalkulator Ikatan (Kembali Utuh) */
+/* 9. Kalkulator Ikatan */
 function mountBond(root,d){
   var rx=(d&&d.reactions)||[],cur=0;
   if(!rx.length){root.innerHTML='<p class="muted">Data belum tersedia.</p>';return}
@@ -833,10 +834,10 @@ function mountBond(root,d){
   draw();
 }
 
-/* 10. Lab Orde Reaksi (Kembali Utuh) */
+/* 10. Lab Orde Reaksi */
 function mountOrde(root){
   var n=1,f=1;
-  root.innerHTML='<div class="atom"><div class="atom-stage"><svg class="atom-svg" viewBox="0 0 320 240" role="img" aria-label="Grafik laju" id="oSvg"></svg></div><div><div class="presets" id="oBtns" style="margin:0 0 14px"></div>'+rangeField('oF','Konsentrasi dikali',1,5,1,1,'kali')+'<div class="row" id="oChips" style="margin-bottom:12px"></div><div class="note" id="oNote" aria-live="polite"></div></div></div>';
+  root.innerHTML='<div class="atom"><div class="atom-stage"><svg class="atom-svg" viewBox="0 0 320 240" role="img" aria-label="Grafik laju" id="oSvg"></svg></div><div style="display:flex;flex-direction:column;gap:12px"><div class="presets" id="oBtns"></div>'+rangeField('oF','Konsentrasi dikali',1,5,1,1,'kali')+'<div class="row" id="oChips"></div><div class="note" id="oNote" aria-live="polite"></div></div></div>';
   function draw(){
     var ymax=Math.max(1,Math.pow(5,n))*1.15,X=function(x){return 40+x/5*260},Y=function(v){return 200-v/ymax*180},pts=[];
     for(var x=0;x<=5.001;x+=.25)pts.push(X(x).toFixed(1)+','+Y(Math.pow(x,n)).toFixed(1));
@@ -855,10 +856,10 @@ function mountOrde(root){
   $('#oF',root).addEventListener('input',upd);upd();
 }
 
-/* 11. Simulasi Tumbukan (Kembali Utuh) */
+/* 11. Simulasi Tumbukan */
 function mountCollision(root){
   var W=400,H=240,rad=6,P=[],T=3,N=10,cat=false,raf=0,st={col:0,eff:0},cool={},EA=6;
-  root.innerHTML='<canvas class="coll" id="cv" width="'+W+'" height="'+H+'" style="display:block;width:100%;height:auto;background:var(--card-2);border:1px solid var(--line);border-radius:18px"></canvas><div class="row" id="cLeg" style="margin:10px 0;font-size:13px"><span class="chip neg">● A</span><span class="chip pos">● B</span><span class="chip neu">● Produk</span></div><div class="atom" style="align-items:start"><div>'+rangeField('cT','Suhu',1,5,1,T,'')+rangeField('cN','Jumlah partikel',4,20,2,N,'')+'<label class="row" style="gap:8px;margin-bottom:12px"><input type="checkbox" id="cK"> Tambahkan katalis</label><div class="row"><button class="btn ghost small" id="cR">Ulangi</button></div></div><div><div class="cfg" id="cSt" style="margin:0 0 10px;grid-template-columns:1fr 1fr"></div><div class="note" id="cNote" aria-live="polite"></div></div></div>';
+  root.innerHTML='<canvas class="coll" id="cv" width="'+W+'" height="'+H+'" style="display:block;width:100%;height:auto;background:var(--card-2);border:1px solid var(--line);border-radius:18px"></canvas><div class="row" id="cLeg" style="margin:10px 0;font-size:13px"><span class="chip neg">● A</span><span class="chip pos">● B</span><span class="chip neu">● Produk</span></div><div class="atom" style="align-items:start"><div style="display:flex;flex-direction:column;gap:12px">'+rangeField('cT','Suhu',1,5,1,T,'')+rangeField('cN','Jumlah partikel',4,20,2,N,'')+'<label class="row" style="gap:8px;margin-bottom:12px"><input type="checkbox" id="cK"> Tambahkan katalis</label><div class="row"><button class="btn ghost small" id="cR">Ulangi</button></div></div><div><div class="cfg" id="cSt" style="margin:0 0 10px;grid-template-columns:1fr 1fr"></div><div class="note" id="cNote" aria-live="polite"></div></div></div>';
   var cv=$('#cv',root),ctx=cv.getContext('2d');
   function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()||'#888'}
   function spd(){return Math.sqrt(T)*1.4*(.5+Math.random())}
@@ -894,10 +895,10 @@ function mountCollision(root){
   if(!reduceMotion)raf=requestAnimationFrame(loop);
 }
 
-/* 12. Simulasi Laju vs Suhu (Kembali Utuh) */
+/* 12. Simulasi Laju vs Suhu */
 function mountRateTemp(root){
   var cfg={n:2,X:10,T0:20,v0:0.004};
-  root.innerHTML='<div class="atom"><div>'+rangeField('rT','Suhu',cfg.T0,cfg.T0+80,5,cfg.T0,'°C')+'<div class="field" style="margin-bottom:12px"><label for="rN">Kelipatan laju tiap suhu naik:</label><div class="row"><select id="rN" style="width:auto"><option value="2">2 kali</option><option value="3">3 kali</option></select><select id="rX" style="width:auto"><option value="10">tiap naik 10 °C</option></select></div></div><p class="muted" style="font-size:13px">Laju awal ('+fsci(cfg.v0)+' M/s) diukur pada 20 °C.</p></div><div><div class="cfg" id="rSt" style="margin:0 0 12px;grid-template-columns:1fr"></div><div class="bar" role="img"><i id="rBar" style="width:0%"></i></div><div class="note" id="rNote" aria-live="polite" style="margin-top:12px"></div></div></div>';
+  root.innerHTML='<div class="atom"><div style="display:flex;flex-direction:column;gap:12px">'+rangeField('rT','Suhu',cfg.T0,cfg.T0+80,5,cfg.T0,'°C')+'<div class="field"><label for="rN">Kelipatan laju tiap suhu naik:</label><div class="row"><select id="rN" style="width:auto"><option value="2">2 kali</option><option value="3">3 kali</option></select><select id="rX" style="width:auto"><option value="10">tiap naik 10 °C</option></select></div></div><p class="muted" style="font-size:13px">Laju awal ('+fsci(cfg.v0)+' M/s) diukur pada 20 °C.</p></div><div><div class="cfg" id="rSt" style="margin:0 0 12px;grid-template-columns:1fr"></div><div class="bar" role="img"><i id="rBar" style="width:0%"></i></div><div class="note" id="rNote" aria-live="polite" style="margin-top:12px"></div></div></div>';
   function upd(){
     var T=+$('#rT',root).value,n=+$('#rN',root).value,X=+$('#rX',root).value,dT=T-cfg.T0,k=dT/X,fac=Math.pow(n,k),v=cfg.v0*fac;
     $('#rTv',root).textContent=T;
