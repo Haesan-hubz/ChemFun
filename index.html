@@ -1,0 +1,932 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>ChemistFun - Ultimate Edition</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F8FAFC; --card:#FFFFFF; --card-2:#F1F5F9; --line:#E2E8F0;
+  --text:#334155; --muted:#64748B; --strong:#1E293B;
+  --primary:#4F46E5; --primary-ink:#4F46E5; --primary-soft:#EEF2FF; --on-primary:#FFFFFF;
+  --secondary:#06B6D4; --secondary-ink:#0E7490; --secondary-soft:#ECFEFF;
+  --accent:#F43F5E; --accent-ink:#BE123C; --accent-soft:#FFF1F2;
+  --success:#10B981; --success-ink:#047857; --success-soft:#ECFDF5;
+  --neutron:#94A3B8; --shadow:0 1px 2px rgba(15,23,42,.05),0 8px 24px -12px rgba(15,23,42,.12);
+  --font:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0B1120; --card:#131C31; --card-2:#0F172A; --line:#243049;
+  --text:#CBD5E1; --muted:#94A3B8; --strong:#F1F5F9;
+  --primary:#5B5BE0; --primary-ink:#A5B4FC; --primary-soft:rgba(129,140,248,.14);
+  --secondary:#22D3EE; --secondary-ink:#67E8F9; --secondary-soft:rgba(34,211,238,.12);
+  --accent:#FB7185; --accent-ink:#FDA4AF; --accent-soft:rgba(251,113,133,.14);
+  --success:#34D399; --success-ink:#6EE7B7; --success-soft:rgba(52,211,153,.14);
+  --neutron:#64748B; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5); color-scheme:dark}}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3{color:var(--strong);line-height:1.25;margin:0;text-wrap:balance;font-weight:600}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--primary-ink)}
+:focus-visible{outline:3px solid var(--secondary);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+sup,sub{line-height:0;font-size:.7em}
+
+.app{display:grid;grid-template-columns:292px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--card);border-right:1px solid var(--line);
+  padding:22px 16px 20px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--strong);padding:2px 6px;background:none;border:0;text-align:left}
+.brand-mark{width:42px;height:42px;border-radius:12px;background:var(--primary);display:grid;place-items:center;flex:none}
+.brand b{display:block;font-size:17px;font-weight:700;letter-spacing:-.01em}
+.brand small{display:block;color:var(--muted);font-size:12px;line-height:1.3}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:10px 12px 4px}
+.nav a.item,.nav summary{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;text-decoration:none;color:var(--text);font-weight:500;font-size:14px;list-style:none;cursor:pointer}
+.nav summary::-webkit-details-marker{display:none}
+.nav a.item:hover,.nav summary:hover{background:var(--card-2)}
+.nav a.item.on{background:var(--primary-soft);color:var(--primary-ink);font-weight:600}
+.nav details>summary .chev{margin-left:auto;transition:transform .2s;color:var(--muted)}
+.nav details[open]>summary .chev{transform:rotate(90deg)}
+.nav .ico{width:28px;height:28px;border-radius:9px;background:var(--card-2);display:grid;place-items:center;font-size:15px;flex:none}
+.nav .sub{display:flex;flex-direction:column;gap:2px;margin:2px 0 6px 24px;padding-left:14px;border-left:2px solid var(--line)}
+.nav .sub a{display:flex;gap:9px;align-items:flex-start;padding:7px 10px;border-radius:10px;text-decoration:none;color:var(--muted);font-size:13px;line-height:1.4}
+.nav .sub a:hover{background:var(--card-2);color:var(--text)}
+.nav .sub a.on{background:var(--primary-soft);color:var(--primary-ink);font-weight:600}
+.dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--line);flex:none;margin-top:2px;display:grid;place-items:center}
+.dot.done{background:var(--success);border-color:var(--success)}
+.dot.done::after{content:"";width:4px;height:7px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.side-foot{margin-top:auto;font-size:12px;color:var(--muted);padding:0 6px}
+.admin-chip{display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:600;color:var(--accent-ink);background:var(--accent-soft);padding:2px 8px;border-radius:99px}
+
+.topbar{display:none}
+.main{min-width:0;padding:32px max(24px,env(safe-area-inset-right,0px)) 72px 40px}
+.page{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:12px;padding:10px 18px;font-weight:600;font-size:14px;text-decoration:none;background:var(--primary);color:var(--on-primary);transition:transform .12s,filter .12s}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:var(--card);color:var(--text);border-color:var(--line)}
+.btn.ghost:hover{background:var(--card-2);filter:none}
+.btn.soft{background:var(--primary-soft);color:var(--primary-ink)}
+.btn.good{background:var(--success);color:#fff}
+.btn.small{padding:6px 12px;font-size:13px;border-radius:10px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow)}
+.kicker{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--primary-ink)}
+.muted{color:var(--muted)}
+.crumbs{display:flex;flex-wrap:wrap;gap:6px;font-size:13px;color:var(--muted)}
+.crumbs a{color:var(--muted);text-decoration:none}.crumbs a:hover{color:var(--primary-ink)}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px;align-items:center;background:var(--primary);color:#fff;border-radius:24px;padding:36px;position:relative;overflow:hidden}
+.hero h1{color:#fff;font-size:clamp(26px,4vw,36px);font-weight:700;letter-spacing:-.02em}
+.hero p{color:rgba(255,255,255,.88);margin-top:12px;max-width:46ch}
+.hero .btn{background:#fff;color:#3730A3}
+.hero .btn.ghost{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.35)}
+.hero .btn.ghost:hover{background:rgba(255,255,255,.22)}
+.hero-art{justify-self:center;width:100%;max-width:260px}
+.orbit{transform-origin:130px 130px;animation:spin 14s linear infinite}
+.orbit.o2{animation-duration:22s;animation-direction:reverse}
+.orbit.o3{animation-duration:9s}
+@keyframes spin{to{transform:rotate(360deg)}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.stat{display:flex;gap:16px;align-items:center;padding:18px 20px}
+.stat b{display:block;font-size:24px;line-height:1.1;color:var(--strong);font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.ring{width:56px;height:56px;flex:none}
+.chap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.chap{display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit;transition:transform .15s,border-color .15s}
+.chap:hover{transform:translateY(-2px);border-color:var(--primary)}
+.chap .ico{width:46px;height:46px;border-radius:14px;background:var(--primary-soft);display:grid;place-items:center;font-size:24px}
+.chap h3{font-size:16px}
+.bar{height:8px;border-radius:99px;background:var(--card-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--secondary);border-radius:99px;transition:width .4s}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}
+.sec-head h2{font-size:20px}
+
+.title{font-size:clamp(24px,3.4vw,32px);font-weight:700;letter-spacing:-.02em}
+.prose{max-width:68ch;font-size:16px;line-height:1.8; white-space: pre-wrap;}
+.prose p+p{margin-top:14px}
+.widget{padding:0;overflow:hidden}
+.widget-head{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:flex-start;background:var(--secondary-soft)}
+.widget-head .tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--secondary-ink);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:3px 10px;white-space:nowrap}
+.widget-head p{font-size:14px;color:var(--text)}
+.widget-body{padding:24px}
+.pager{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.pager .grow{flex:1 1 220px;min-width:0}
+.pager a.pn{display:flex;flex-direction:column;text-decoration:none;color:var(--text);border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px 16px}
+.pager a.pn:hover{border-color:var(--primary)}
+.pager a.pn.next{text-align:right}
+.pager small{color:var(--muted);font-size:12px}
+.pager span{font-weight:600;font-size:14px}
+
+/* Atom Widget CSS */
+.atom{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:center}
+.atom-stage{background:var(--card-2);border-radius:18px;border:1px solid var(--line)}
+.atom-svg{display:block;width:100%;height:auto;max-height:420px}
+.ring-line{fill:none;stroke:var(--line);stroke-width:1.4}
+.ring-line.used{stroke:var(--neutron);stroke-opacity:.55;stroke-dasharray:3 5}
+.pn-p{fill:var(--accent)} .pn-n{fill:var(--neutron)} .en{fill:var(--secondary)}
+.pn-txt{fill:#fff;font-size:9px;font-weight:700;text-anchor:middle;dominant-baseline:central}
+.atom-id{display:flex;gap:16px;align-items:center;margin-bottom:14px}
+.nuc-note{display:inline-flex;align-items:center;font-weight:700;color:var(--strong);line-height:1}
+.nuc-nums{display:flex;flex-direction:column;justify-content:space-between;font-size:.62em;margin-right:4px;text-align:right;font-weight:600;color:var(--muted);align-self:stretch;padding:2px 0}
+.nuc-nums span{display:block;line-height:1.15}
+.nuc-sym{font-size:1.9em}
+.atom-id .big{font-size:44px;background:var(--primary-soft);color:var(--primary-ink);border-radius:16px;padding:10px 18px}
+.atom-id .big .nuc-nums,.atom-id .big .nuc-sym{color:inherit}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--card-2);color:var(--text)}
+.chip.pos{background:var(--accent-soft);color:var(--accent-ink)}
+.chip.neg{background:var(--secondary-soft);color:var(--secondary-ink)}
+.chip.neu{background:var(--success-soft);color:var(--success-ink)}
+.ctrls{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.ctrl{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.ctrl .sw{width:12px;height:12px;border-radius:50%;flex:none}
+.ctrl .nm{flex:1;font-weight:500;font-size:14px}
+.ctrl .nm small{color:var(--muted);font-weight:400;margin-left:4px}
+.ctrl output{min-width:28px;text-align:center;font-weight:700;color:var(--strong);font-variant-numeric:tabular-nums}
+.round{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card-2);font-size:18px;font-weight:600;line-height:1;display:grid;place-items:center;padding:0}
+.round:hover{background:var(--primary-soft);color:var(--primary-ink);border-color:var(--primary)}
+.round[disabled]{opacity:.35;cursor:not-allowed}
+.note{font-size:13.5px;background:var(--primary-soft);color:var(--text);border-radius:12px;padding:10px 14px;min-height:3.2em}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+
+/* Flashcard */
+.fc-wrap{display:flex;flex-direction:column;align-items:center;gap:18px}
+.fc{width:100%;max-width:440px;aspect-ratio:16/10;perspective:1200px;background:none;border:0;padding:0;border-radius:22px}
+.fc-in{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.3,.7,.2,1)}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;text-align:center;border:1px solid var(--line)}
+.face.front{background:var(--card);box-shadow:var(--shadow)}
+.face.back{background:var(--primary);color:#fff;transform:rotateY(180deg);border-color:transparent}
+.face.back .nuc-nums,.face.back b{color:#fff}
+.face .hint{font-size:12px;color:var(--muted)}
+.face.back .hint{color:rgba(255,255,255,.8)}
+.face .fc-text{font-size:17px;font-weight:600;color:var(--strong)}
+.face.back .fc-text{color:#fff}
+.fc .nuc-note{font-size:34px}
+.face.back .nuc-note{color:#fff}
+.tri{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.tri span{background:rgba(255,255,255,.16);border-radius:12px;padding:6px 12px;font-size:14px}
+.tri b{font-size:20px;display:block;line-height:1.2}
+.dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.dots i.cur{background:var(--primary)}
+.dots i.ok{background:var(--success)}
+
+/* NaCl */
+.nacl-svg{display:block;width:100%;height:auto;background:var(--card-2);border:1px solid var(--line);border-radius:18px;touch-action:none}
+.nacl-svg .nuc-c{fill:var(--primary)} .nacl-svg .nuc-cl{fill:var(--secondary)}
+.nacl-svg .lbl{fill:#fff;font-size:15px;font-weight:700;text-anchor:middle;dominant-baseline:central}
+.nacl-svg .lbl2{fill:var(--muted);font-size:12px;text-anchor:middle}
+.nacl-svg .ev{fill:var(--secondary)}
+.nacl-svg .slot{fill:none;stroke:var(--secondary);stroke-width:2;stroke-dasharray:4 4}
+.nacl-svg .halo{fill:var(--accent);opacity:.18;animation:pulse 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulse{50%{transform:scale(1.4);opacity:.05}}
+.nacl-svg .ed{fill:var(--accent)}
+.drag{cursor:grab;transition:transform .35s ease;outline:none}
+.drag.dragging{transition:none;cursor:grabbing}
+.drag:focus-visible .halo{opacity:.5}
+.charge{font-size:20px;font-weight:700;text-anchor:middle}
+.charge.p{fill:var(--accent-ink)} .charge.n{fill:var(--secondary-ink)}
+.bond{stroke:var(--success);stroke-width:2.5;stroke-dasharray:6 6;fill:none}
+.bond-t{fill:var(--success-ink);font-size:14px;font-weight:700;text-anchor:middle}
+.cfg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px}
+.cfg div{background:var(--card-2);border-radius:14px;padding:12px 16px;font-size:14px}
+.cfg b{color:var(--strong)}
+
+/* Match + slider */
+.match{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px}
+.chips{display:flex;flex-direction:column;gap:8px}
+.mchip{border:1px solid var(--primary);background:var(--primary-soft);color:var(--primary-ink);border-radius:12px;padding:9px 14px;font-weight:600;font-size:14px;text-align:left;cursor:grab}
+.mchip[aria-pressed="true"]{background:var(--primary);color:#fff}
+.mzone{border:2px dashed var(--line);border-radius:14px;padding:12px 14px;font-size:14px;display:flex;flex-direction:column;gap:6px;background:var(--card);text-align:left;width:100%}
+.mzone.over{border-color:var(--secondary);background:var(--secondary-soft)}
+.mzone.ok{border-style:solid;border-color:var(--success);background:var(--success-soft)}
+.mzone.bad{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.mzone b{color:var(--success-ink)}
+.zones{display:flex;flex-direction:column;gap:10px}
+.range{width:100%;accent-color:var(--primary)}
+.steps li{padding:10px 14px;border-radius:12px;margin-top:8px;background:var(--card-2);list-style:none}
+.steps{padding:0;margin:14px 0 0}
+.steps li.cur{background:var(--primary-soft);color:var(--strong)}
+.steps li.fut{opacity:.35}
+
+/* Quiz */
+.chips-row{display:flex;flex-wrap:wrap;gap:8px}
+.fchip{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px;font-size:13px;font-weight:500}
+.fchip[aria-pressed="true"]{background:var(--primary);color:#fff;border-color:var(--primary)}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;color:var(--muted);margin-bottom:10px}
+.qtext{font-size:clamp(17px,2.4vw,20px);font-weight:600;color:var(--strong);line-height:1.5;margin:18px 0; white-space: pre-wrap;}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;gap:14px;align-items:center;text-align:left;width:100%;padding:12px 16px;border:2px solid var(--line);background:var(--card);border-radius:14px;font-size:15px;transition:border-color .12s,background .12s}
+.opt:hover:not([disabled]){border-color:var(--primary)}
+.opt .lt{width:32px;height:32px;border-radius:10px;background:var(--card-2);display:grid;place-items:center;font-weight:700;flex:none;color:var(--strong)}
+.opt[aria-pressed="true"]{border-color:var(--primary);background:var(--primary-soft)}
+.opt[aria-pressed="true"] .lt{background:var(--primary);color:#fff}
+.opt.ok{border-color:var(--success);background:var(--success-soft)}
+.opt.ok .lt{background:var(--success);color:#fff}
+.opt.bad{border-color:var(--accent);background:var(--accent-soft)}
+.opt.bad .lt{background:var(--accent);color:#fff}
+.opt[disabled]{cursor:default}
+.score{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.score .ring{width:110px;height:110px}
+.review{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.rv{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;border-radius:12px;background:var(--card-2);font-size:14px}
+.rv i{font-style:normal;font-weight:700;flex:none}
+.rv.ok i{color:var(--success-ink)} .rv.bad i{color:var(--accent-ink)}
+.empty{text-align:center;padding:40px 16px;color:var(--muted)}
+.qnav{display:flex;flex-wrap:wrap;gap:6px}
+.qn{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-weight:600;font-size:13px;font-variant-numeric:tabular-nums}
+.qn.cur{outline:3px solid var(--secondary);outline-offset:1px}
+.qn.ok{background:var(--success-soft);border-color:var(--success);color:var(--success-ink)}
+.qn.bad{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
+.bsrow{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 14px;border:2px solid var(--line);border-radius:14px;background:var(--card)}
+.bsrow.ok{border-color:var(--success);background:var(--success-soft)}
+.bsrow.bad{border-color:var(--accent);background:var(--accent-soft)}
+.tf{display:flex;gap:6px}
+.tfb{border:2px solid var(--line);background:var(--card);border-radius:10px;padding:6px 16px;font-weight:600;font-size:13px}
+.tfb[aria-pressed="true"]{border-color:var(--primary);background:var(--primary-soft);color:var(--primary-ink)}
+.tfb.ok{border-color:var(--success);background:var(--success);color:#fff}
+.tfb.bad{border-color:var(--accent);background:var(--accent);color:#fff}
+.tfb[disabled]{cursor:default}
+.expl{margin-top:16px;background:var(--secondary-soft);border-radius:14px;padding:14px 16px;font-size:14px}
+.rv.ok,.rv.bad{background:var(--card-2)}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:60;background:rgba(15,23,42,.55);display:grid;place-items:center;padding:16px;backdrop-filter:blur(3px)}
+.modal-card{background:var(--card);border-radius:22px;max-width:520px;width:100%;padding:28px;box-shadow:0 30px 80px -20px rgba(0,0,0,.5);animation:pop .22s ease-out;max-height:calc(100vh - 32px);overflow-y:auto}
+@keyframes pop{from{transform:translateY(12px) scale(.97);opacity:0}}
+.m-badge{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:28px;font-weight:700;margin-bottom:14px}
+.m-badge.ok{background:var(--success-soft);color:var(--success-ink)}
+.m-badge.bad{background:var(--accent-soft);color:var(--accent-ink)}
+.m-ans{background:var(--card-2);border-radius:12px;padding:10px 14px;margin:14px 0;font-size:14px}
+.m-ans b{color:var(--strong)}
+
+/* Admin */
+.form{display:grid;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-weight:600;font-size:14px;color:var(--strong)}
+.field small{color:var(--muted);font-size:12.5px}
+input[type=text],select,textarea{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 14px;width:100%}
+textarea{resize:vertical;min-height:110px}
+textarea.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+input:focus,select:focus,textarea:focus{outline:3px solid var(--secondary);outline-offset:1px}
+.drop{border:2px dashed var(--line);border-radius:16px;padding:20px;text-align:center;color:var(--muted);background:var(--card-2)}
+.drop.over{border-color:var(--secondary);background:var(--secondary-soft)}
+.msg{padding:10px 14px;border-radius:12px;font-size:14px}
+.msg.ok{background:var(--success-soft);color:var(--success-ink)}
+.msg.err{background:var(--accent-soft);color:var(--accent-ink)}
+.list{display:flex;flex-direction:column;gap:8px}
+.li{display:flex;gap:12px;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--line);border-radius:12px;font-size:14px}
+.li div{min-width:0}.li small{color:var(--muted);display:block}
+.toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--strong);color:var(--bg);padding:10px 18px;border-radius:99px;font-size:14px;z-index:80;box-shadow:var(--shadow)}
+
+.scrim{display:none}
+
+@media (max-width:960px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:41}
+  .topbar{display:flex;align-items:center;gap:12px;position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--card);border-bottom:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+  .topbar .t{font-weight:700;color:var(--strong)}
+  .side{position:fixed;z-index:50;left:0;top:0;width:min(300px,86vw);transform:translateX(-102%);transition:transform .25s;box-shadow:var(--shadow);padding-top:calc(22px + env(safe-area-inset-top,0px))}
+  .side.open{transform:none}
+  .scrim.on{display:block;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:45}
+  .main{padding:20px max(16px,env(safe-area-inset-right,0px)) 56px max(16px,env(safe-area-inset-left,0px))}
+  .hero{grid-template-columns:minmax(0,1fr);padding:26px}
+  .hero-art{max-width:170px;order:-1;justify-self:start}
+  .atom{grid-template-columns:minmax(0,1fr)}
+  .match{grid-template-columns:minmax(0,1fr)}
+  .card{padding:20px}
+  .widget-body{padding:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+
+<div class="app">
+  <aside class="side" id="side" aria-label="Navigasi materi"></aside>
+  <div>
+    <div class="topbar">
+      <button class="btn ghost small" id="menuBtn" aria-controls="side" aria-expanded="false" aria-label="Buka navigasi bab">Menu</button>
+      <span class="t">ChemistFun Ultimate</span>
+    </div>
+    <main class="main" id="main" tabindex="-1"></main>
+  </div>
+</div>
+<div class="scrim" id="scrim"></div>
+<div class="modal" id="modal" hidden><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="m-title" id="modalCard"></div></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- Data Kimia Terintegrasi (Bab 1 - Bab 6) ---------- */
+var BASE={
+  app:{name:'ChemistFun Ultimate',tagline:'Ruang Belajar Kimia',description:'Website interaktif kelas 11 SMA. Meliputi struktur atom, termokimia, laju reaksi, hingga kesetimbangan.'},
+  materials:[
+    {chapter_id:'bab-1',chapter_name:'Bab 1: Struktur Atom & Sistem Periodik',icon:'⚛️',subtopics:[
+      {sub_id:'sub-1-1',title:'Mengenal Atom: Lego Alam Semesta',content:'Pernahkah kamu membayangkan apa penyusun terkecil dari benda-benda di sekitarmu? Atom ibarat balok lego penyusun alam semesta! Di bagian tengahnya (inti atom) ada Proton (+) dan Neutron (netral) yang asyik nongkrong bareng. Di luar inti, ada Elektron (-) yang super aktif berlarian mengelilingi inti.',interactive_widget:{type:'atom_simulation',instruction:"Klik tombol '+' untuk menambahkan Proton atau Elektron dan lihat bagaimana sifat atom berubah secara real-time!"}},
+      {sub_id:'sub-1-2',title:'KTP Atom: Nomor Atom & Massa',content:"Bagaimana cara membedakan atom emas dan atom besi? Kita pakai 'KTP' atom! Nomor Atom = jumlah Proton (identitas asli). Sedangkan Nomor Massa = jumlah Proton + Neutron (ibarat berat badan atom). Ingat, Elektron itu saking ringannya, beratnya tidak dihitung!",interactive_widget:{type:'flashcard',instruction:'Balik kartu interaktif ini untuk menebak lambang unsur dan jumlah partikel dasarnya.'}}
+    ]},
+    {chapter_id:'bab-2',chapter_name:'Bab 2: Ikatan Kimia',icon:'🔗',subtopics:[
+      {sub_id:'sub-2-1',title:"Kenapa Atom Suka 'Menikah'?",content:'Kecuali Gas Mulia yang sudah mandiri (stabil), atom-atom lain itu tidak suka jomblo! Agar stabil, mereka harus berikatan. Ada yang memakai sistem serah-terima elektron (Ikatan Ion), ada juga yang patungan elektron buat dipakai bareng (Ikatan Kovalen).',interactive_widget:{type:'drag_and_drop',instruction:'Tarik satu elektron dari atom Na ke atom Cl untuk membentuk Ikatan Ion NaCl yang stabil!'}}
+    ]},
+    {chapter_id:'bab-3',chapter_name:'Bab 3: Termokimia',icon:'🔥',subtopics:[
+      {sub_id:'sub-3-1',title:'Reaksi Eksoterm & Endoterm',content:'Setiap reaksi kimia disertai perubahan entalpi (ΔH). Reaksi EKSOTERM melepas kalor dari sistem ke lingkungan (ΔH negatif, terasa panas). Reaksi ENDOTERM menyerap kalor dari lingkungan ke sistem (ΔH positif, terasa dingin).',interactive_widget:{type:'energy_diagram',instruction:'Geser tingkat energi reaktan dan produk, lalu lihat tanda ΔH dan jenis reaksinya.'}},
+      {sub_id:'sub-3-2',title:'Kalorimetri: Mengukur Kalor Reaksi',content:'Kalor reaksi bisa diukur lewat percobaan memakai kalorimeter. Prinsipnya asas Black: kalor yang dilepas sama dengan kalor yang diserap. Kalorimeter sederhana (gelas styrofoam), hanya larutan yang dihitung: q = m × c × ΔT.',interactive_widget:{type:'kalorimeter',instruction:'Atur volume, konsentrasi, dan kenaikan suhu. Lihat kalor dan ΔH dihitung langkah demi langkah.'}}
+    ]},
+    {chapter_id:'bab-4',chapter_name:'Bab 4: Laju Reaksi',icon:'⚡',subtopics:[
+      {sub_id:'sub-4-1',title:'Faktor yang Mempengaruhi Laju Reaksi',content:'Ada empat faktor utama: Konsentrasi, Luas Permukaan, Suhu, dan Katalis. Suhu naik, energi kinetik rata-rata partikel naik, sehingga lebih banyak partikel mencapai energi aktivasi (Ea).',interactive_widget:{type:'rate_temp',instruction:'Geser suhu dan lihat kelajuan reaksi meningkat drastis.'}},
+      {sub_id:'sub-4-2',title:'Teori Tumbukan & Energi Aktivasi',content:'Menurut teori tumbukan, reaksi terjadi karena partikel pereaksi saling bertumbukan. Hanya tumbukan efektif yang berhasil, yaitu tumbukan dengan (1) energi yang cukup dan (2) orientasi yang tepat.',interactive_widget:{type:'collision',instruction:'Atur suhu, konsentrasi, dan katalis. Amati partikel yang bertumbukan dan efektivitasnya.'}}
+    ]},
+    {chapter_id:'bab-5',chapter_name:'Bab 5: Kesetimbangan Kimia',icon:'⚖️',subtopics:[
+      {sub_id:'sub-5-1',title:'Reaksi Reversibel & Dinamis',content:'Kesetimbangan disebut "dinamis" karena secara makroskopis (kasat mata) reaksi seolah berhenti, dan konsentrasi zat-zat tampak tetap. TAPI, secara mikroskopis reaksi tetap berlangsung terus-menerus ke arah kanan dan kiri dengan laju yang SAMA BESAR (v1 = v2).',interactive_widget:{type:'flashcard',instruction:'Cek ingatanmu mengenai syarat dan konsep kesetimbangan.',data:[{front:'Apa tanda sebuah reaksi merupakan reaksi reversibel?',back:'Tanda panah bolak-balik (⇌)'},{front:'Syarat utama terjadinya kesetimbangan dinamis adalah?',back:'Laju reaksi ke kanan sama dengan laju reaksi ke kiri (v1 = v2)'},{front:'Apakah saat keadaan setimbang reaksi kimia benar-benar berhenti?',back:'Tidak! Reaksi terus berjalan di tingkat mikroskopis.'}]}},
+      {sub_id:'sub-5-2',title:'Tetapan Kesetimbangan (Kc)',content:'Hanya zat berwujud Gas (g) dan Larutan (aq) yang dimasukkan ke dalam rumus Kc! Zat berwujud Padat (s) dan Cairan Murni (l) TIDAK DIMASUKKAN (karena konsentrasinya dianggap konstan/tetap).',interactive_widget:{type:'drag_drop',instruction:'Pasangkan reaksi kesetimbangan dengan rumus Kc yang benar!',data:[{term:'N2(g) + 3H2(g) ⇌ 2NH3(g)',match:'Kc = [NH3]² / ([N2][H2]³)'},{term:'CaCO3(s) ⇌ CaO(s) + CO2(g)',match:'Kc = [CO2]'},{term:'H2O(l) ⇌ H+(aq) + OH-(aq)',match:'Kc = [H+][OH-]'},{term:'2SO2(g) + O2(g) ⇌ 2SO3(g)',match:'Kc = [SO3]² / ([SO2]²[O2])'}]}},
+      {sub_id:'sub-5-3',title:'Tetapan Parsial Gas (Kp)',content:'Untuk reaksi gas, kesetimbangan bisa dihitung memakai tekanan parsial (Kp). Hubungan Kp dan Kc:\nKp = Kc × (R × T)^Δn\n\nKeterangan:\nΔn = (Jumlah koefisien gas di KANAN) - (Jumlah koefisien gas di KIRI).',interactive_widget:{type:'slider',instruction:'Geser penjelajah langkah untuk mencari nilai Δn pada reaksi Haber-Bosch.',data:{steps:['Reaksi pembuatan Amonia: N2(g) + 3H2(g) ⇌ 2NH3(g)','Langkah 1: Cek wujud zat. Semuanya gas, maka semua dihitung koefisiennya.','Langkah 2: Hitung koefisien gas di ruas KANAN (produk). Kanan = 2.','Langkah 3: Hitung koefisien gas di ruas KIRI (reaktan). Kiri = 1 + 3 = 4.','Langkah 4: Hitung selisih (Δn) = Kanan - Kiri = 2 - 4 = -2.','Langkah 5: Masukkan ke rumus: Kp = Kc(RT)⁻²']}}},
+      {sub_id:'sub-5-4',title:'Asas Le Chatelier',content:'Henri Le Chatelier: "Jika terhadap sistem kesetimbangan diberikan aksi, sistem akan bereaksi meminimalkan efek tersebut."\n\nSuhu: Naik -> Bergeser ke Endoterm; Turun -> Bergeser ke Eksoterm.\nVolume: Diperbesar -> Koefisien Gas Besar; Diperkecil -> Koefisien Gas Kecil.\nKonsentrasi: Tambah -> Menjauhi; Kurangi -> Mendekati.',interactive_widget:{type:'flashcard',instruction:'Tebak ke mana kesetimbangan akan bergeser bila diberi aksi berikut!',data:[{front:'Suhu ruangan dinaikkan (dipanaskan)',back:'Bergeser ke arah reaksi ENDOTERM (menyerap panas)'},{front:'Suhu ruangan diturunkan (didinginkan)',back:'Bergeser ke arah reaksi EKSOTERM (melepas panas)'},{front:'Volume diperkecil (Tekanan diperbesar)',back:'Bergeser ke arah yang memiliki KOEFISIEN GAS TERKECIL'},{front:'Volume diperbesar (Tekanan diperkecil)',back:'Bergeser ke arah yang memiliki KOEFISIEN GAS TERBESAR'},{front:'Katalis ditambahkan',back:'TIDAK BERGESER. Hanya mempercepat tercapainya kesetimbangan.'}]}}
+    ]}
+  ],
+  quiz:{
+    title:'Uji Pemahaman Kimia Lintas Bab 🧠',
+    description:'Kumpulan latihan soal lengkap. Pilih bab yang mau diuji pada filter di atas!',
+    questions:[
+      {q_id:'q-001',chapter_ref:'bab-1',question_text:'Partikel penyusun inti atom yang sama sekali tidak memiliki muatan listrik adalah...',options:['A. Proton','B. Elektron','C. Neutron','D. Positron'],correct_answer:'C. Neutron',explanation:"Tepat sekali! 'Neutron' netral, Proton Positif (+), Elektron Negatif (-)."},
+      {q_id:'q-002',chapter_ref:'bab-2',question_text:'Unsur Natrium (Na) berikatan dengan Klorin (Cl) membentuk garam dapur (NaCl). Jenis ikatan apa yang terjadi?',options:['A. Kovalen Polar','B. Kovalen Non-polar','C. Ion','D. Logam'],correct_answer:'C. Ion',explanation:'Serah-terima elektron antara Logam dan Non-logam disebut Ikatan Ion.'},
+      {q_id:'q-kc-01',chapter_ref:'bab-5',type:'pg',topic:'Konsep Kesetimbangan',question_text:'Sistem reaksi dikatakan mencapai kesetimbangan dinamis apabila...',options:['A. Reaksi berhenti total','B. Jumlah mol reaktan = produk','C. Laju reaksi pembentukan produk = laju reaksi penguraiannya','D. Reaktan habis'],correct_answer:'C. Laju reaksi pembentukan produk = laju reaksi penguraiannya',explanation:'Kesetimbangan dinamis tercapai ketika laju reaksi ke kanan (v1) = laju reaksi ke kiri (v2).'},
+      {q_id:'q-kc-02',chapter_ref:'bab-5',type:'pg',topic:'Rumus Kc',question_text:'Reaksi: BiCl3(aq) + H2O(l) ⇌ BiOCl(s) + 2HCl(aq)\nRumus tetapan kesetimbangan (Kc) yang benar adalah...',options:['A. Kc = [BiOCl][HCl]² / [BiCl3][H2O]','B. Kc = [HCl]² / [BiCl3]','C. Kc = [BiCl3] / [HCl]²','D. Kc = [HCl] / [BiCl3]'],correct_answer:'B. Kc = [HCl]² / [BiCl3]',explanation:'Zat berwujud padat (s) dan cair (l) diabaikan. BiOCl(s) dan H2O(l) dicoret dari rumus.'},
+      {q_id:'q-kc-06',chapter_ref:'bab-5',type:'pg',topic:'Pergeseran (Suhu & Volume)',question_text:'N2(g) + 3H2(g) ⇌ 2NH3(g)  ΔH = -92 kJ\nAgar hasil amonia (NH3) maksimum, perlakuan yang tepat berdasarkan Asas Le Chatelier adalah...',options:['A. Suhu dinaikkan dan volume diperbesar','B. Suhu diturunkan dan tekanan diperbesar','C. Suhu dinaikkan dan tekanan diperkecil','D. Ditambah katalis'],correct_answer:'B. Suhu diturunkan dan tekanan diperbesar',explanation:'Reaksi ke kanan Eksoterm (ΔH negatif), jadi turunkan suhu. Koefisien kanan (2) lebih kecil dari kiri (4), jadi perbesar tekanan (perkecil volume) agar geser ke koefisien kecil.'}
+    ]
+  }
+};
+var EXTRA={chapters:[],questions:[]};
+var SYM=['H','He','Li','Be','B','C','N','O','F','Ne','Na','Mg','Al','Si','P','S','Cl','Ar','K','Ca'];
+var NAME=['Hidrogen','Helium','Litium','Berilium','Boron','Karbon','Nitrogen','Oksigen','Fluorin','Neon','Natrium','Magnesium','Aluminium','Silikon','Fosfor','Belerang','Klorin','Argon','Kalium','Kalsium'];
+var NCOM=[0,2,4,5,6,6,7,8,10,10,12,12,14,14,16,16,18,22,20,20];
+
+/* ---------- Util ---------- */
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function store(k,d,v){try{if(v===undefined){var x=localStorage.getItem('chemfun.ult.'+k);return x?JSON.parse(x):d}localStorage.setItem('chemfun.ult.'+k,JSON.stringify(v))}catch(e){return d}}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+var reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+function sup(c){return c>0?(c>1?c:'')+'+':c<0?(c<-1?-c:'')+'−':''}
+function toast(t){var el=$('#toast');el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){el.hidden=true},2400)}
+function para(t){return String(t).split(/\n{2,}/).map(function(p){return '<p>'+esc(p).replace(/\n/g,'<br>')+'</p>'}).join('')}
+function nuc(z,a,sym,ch){return '<span class="nuc-note"><span class="nuc-nums"><span>'+a+'</span><span>'+z+'</span></span><span class="nuc-sym">'+esc(sym)+(ch?'<sup>'+sup(ch)+'</sup>':'')+'</span></span>'}
+
+/* ---------- State ---------- */
+var custom=store('custom',{subs:[],questions:[]});
+if(!custom||!custom.subs)custom={subs:[],questions:[]};
+var prog=store('progress',{done:{},quiz:{},best:{}});
+if(!prog||!prog.done)prog={done:{},quiz:{},best:{}};
+if(!prog.ans)prog.ans={};
+var adminOn=store('admin',false)===true;
+var quiz=null;
+
+function save(){store('custom',null,custom);store('progress',null,prog);store('admin',null,adminOn)}
+
+function getMaterials(){
+  var mats=BASE.materials.map(function(c){return {chapter_id:c.chapter_id,chapter_name:c.chapter_name,icon:c.icon,subtopics:c.subtopics.map(function(s){return {sub_id:s.sub_id,title:s.title,content:s.content,type:s.interactive_widget.type,instruction:s.interactive_widget.instruction,data:s.interactive_widget.data,custom:false}})}});
+  var n=0;
+  custom.subs.forEach(function(cs){
+    var key=cs.chapter_name.trim().toLowerCase();
+    var ch=mats.filter(function(c){return c.chapter_name.trim().toLowerCase()===key})[0];
+    if(!ch){n++;ch={chapter_id:'bab-k'+n,chapter_name:cs.chapter_name.trim(),icon:'📘',subtopics:[]};mats.push(ch)}
+    ch.subtopics.push({sub_id:cs.id,title:cs.title,content:cs.content,type:cs.type,instruction:cs.instruction||'',data:cs.data,custom:true});
+  });
+  return mats;
+}
+function chapterIdByName(mats,name){var k=String(name||'').trim().toLowerCase();var c=mats.filter(function(c){return c.chapter_name.trim().toLowerCase()===k})[0];return c?c.chapter_id:''}
+function getQuestions(){
+  var mats=getMaterials();var out=BASE.quiz.questions.slice();
+  custom.subs.forEach(function(cs){(cs.quiz||[]).forEach(function(q,i){out.push({q_id:cs.id+'-q'+(i+1),chapter_ref:chapterIdByName(mats,cs.chapter_name),question_text:q.question_text,options:q.options,correct_answer:q.correct_answer,explanation:q.explanation})})});
+  (custom.questions||[]).forEach(function(q){out.push(q)});
+  return out;
+}
+function flatSubs(mats){var o=[];mats.forEach(function(c){c.subtopics.forEach(function(s){o.push({c:c,s:s})})});return o}
+
+function normQuiz(arr){
+  if(!Array.isArray(arr))throw new Error('quiz_data harus berupa array soal.');
+  return arr.map(function(q,i){
+    var text=q.question_text||q.question||q.pertanyaan;
+    var opts=q.options||q.pilihan;
+    if(!text||!Array.isArray(opts)||opts.length<2)throw new Error('Soal #'+(i+1)+' butuh question_text dan minimal 2 options.');
+    opts=opts.map(String);
+    var ans=q.correct_answer!=null?q.correct_answer:q.jawaban;
+    var hit=opts.indexOf(String(ans));
+    if(hit<0&&typeof ans==='number'&&opts[ans])hit=ans;
+    if(hit<0&&typeof ans==='string'&&/^[A-Za-z]$/.test(ans.trim())){hit=opts.map(function(o){return o.trim().charAt(0).toUpperCase()}).indexOf(ans.trim().toUpperCase())}
+    if(hit<0)throw new Error('Soal #'+(i+1)+': correct_answer harus sama dengan salah satu opsi (atau hurufnya).');
+    return {question_text:String(text),options:opts,correct_answer:opts[hit],explanation:String(q.explanation||q.pembahasan||'')};
+  });
+}
+
+/* ---------- FIX KLIK DI CANVAS/IFRAME ---------- */
+document.addEventListener('click', function(e) {
+  var a = e.target.closest('a');
+  if (a && a.getAttribute('href') && a.getAttribute('href').startsWith('#')) {
+    e.preventDefault();
+    var targetHash = a.getAttribute('href');
+    if (location.hash !== targetHash) {
+      history.pushState(null, null, targetHash);
+      route();
+    }
+  }
+});
+
+/* ---------- Router ---------- */
+var main=$('#main'),side=$('#side');
+function route(){
+  var h=(location.hash||'').slice(1)||'beranda';
+  closeDrawer();
+  var mats=getMaterials();
+  if(h==='admin'){adminOn=true;save()}
+  renderSide(mats,h);
+  if(h==='beranda')viewHome(mats);
+  else if(h.indexOf('latihan')===0){var f=h.length>8?h.slice(8):'all';if(!quiz||quiz.filter!==f)startQuiz(f);viewQuiz(mats)}
+  else if(h==='admin'){viewAdmin(mats)}
+  else{
+    var fs=flatSubs(mats);var idx=-1;fs.forEach(function(x,i){if(x.s.sub_id===h)idx=i});
+    if(idx>=0)viewSub(mats,fs,idx);
+    else{var ch=mats.filter(function(c){return c.chapter_id===h})[0];if(ch)viewChapter(mats,ch);else viewHome(mats)}
+  }
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+
+/* ---------- Sidebar ---------- */
+function renderSide(mats,h){
+  var cur=null;mats.forEach(function(c){if(c.chapter_id===h||c.subtopics.some(function(s){return s.sub_id===h}))cur=c.chapter_id});
+  var html='<a class="brand" href="#beranda" id="brand"><span class="brand-mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="3.2" fill="#fff"/><ellipse cx="13" cy="13" rx="11" ry="4.6" fill="none" stroke="#fff" stroke-width="1.6"/><ellipse cx="13" cy="13" rx="11" ry="4.6" fill="none" stroke="#fff" stroke-width="1.6" transform="rotate(60 13 13)"/><ellipse cx="13" cy="13" rx="11" ry="4.6" fill="none" stroke="#fff" stroke-width="1.6" transform="rotate(120 13 13)"/></svg></span><span><b>'+esc(BASE.app.name)+'</b><small>'+esc(BASE.app.tagline)+'</small></span></a>';
+  html+='<nav class="nav" aria-label="Bab materi"><a class="item'+(h==='beranda'?' on':'')+'" href="#beranda"><span class="ico" aria-hidden="true">🏠</span>Beranda</a><div class="nav-label">Materi</div>';
+  mats.forEach(function(c){
+    var done=c.subtopics.filter(function(s){return prog.done[s.sub_id]}).length;
+    html+='<details'+(cur===c.chapter_id?' open':'')+'><summary><span class="ico" aria-hidden="true">'+esc(c.icon)+'</span><span style="min-width:0">'+esc(c.chapter_name)+'<small style="display:block;color:var(--muted);font-weight:400;font-size:12px">'+done+' dari '+c.subtopics.length+' selesai</small></span><span class="chev" aria-hidden="true">›</span></summary><div class="sub">';
+    c.subtopics.forEach(function(s){html+='<a href="#'+s.sub_id+'" class="'+(h===s.sub_id?'on':'')+'"'+(h===s.sub_id?' aria-current="page"':'')+'><span class="dot'+(prog.done[s.sub_id]?' done':'')+'" aria-hidden="true"></span><span>'+esc(s.title)+'</span></a>'});
+    html+='</div></details>';
+  });
+  html+='<div class="nav-label">Ujian</div><a class="item'+(h.indexOf('latihan')===0?' on':'')+'" href="#latihan"><span class="ico" aria-hidden="true">🧠</span>Latihan Soal</a>';
+  if(adminOn)html+='<div class="nav-label">Pengelola</div><a class="item'+(h==='admin'?' on':'')+'" href="#admin"><span class="ico" aria-hidden="true">🤖</span>Buat Materi AI</a>';
+  html+='</nav><div class="side-foot">'+(adminOn?'<span class="admin-chip">Mode admin aktif</span> <button class="btn ghost small" id="adminOff" style="margin-left:4px">Tutup</button>':'Semangat terus belajarnya!')+'</div>';
+  side.innerHTML=html;
+  var taps=0,tt;$('#brand').addEventListener('click',function(){taps++;clearTimeout(tt);tt=setTimeout(function(){taps=0},900);if(taps>=5&&!adminOn){adminOn=true;save();toast('Mode admin dibuka');route()}});
+  var off=$('#adminOff');if(off)off.addEventListener('click',function(){adminOn=false;save();location.hash==='#admin'?(location.hash='#beranda'):route()});
+}
+function closeDrawer(){side.classList.remove('open');$('#scrim').classList.remove('on');$('#menuBtn').setAttribute('aria-expanded','false')}
+$('#menuBtn').addEventListener('click',function(){var o=side.classList.toggle('open');$('#scrim').classList.toggle('on',o);this.setAttribute('aria-expanded',String(o))});
+$('#scrim').addEventListener('click',closeDrawer);
+
+/* ---------- Views ---------- */
+function ringSvg(pct,color){var r=24,c=2*Math.PI*r;return '<svg class="ring" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="'+r+'" fill="none" stroke="var(--card-2)" stroke-width="7"/><circle cx="30" cy="30" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="7" stroke-linecap="round" stroke-dasharray="'+(c*pct/100).toFixed(1)+' '+c.toFixed(1)+'" transform="rotate(-90 30 30)"/></svg>'}
+
+function viewHome(mats){
+  var fs=flatSubs(mats),total=fs.length,done=fs.filter(function(x){return prog.done[x.s.sub_id]}).length;
+  var qs=getQuestions(),qOk=qs.filter(function(q){return prog.quiz[q.q_id]===true}).length,qTried=qs.filter(function(q){return q.q_id in prog.quiz}).length;
+  var next=fs.filter(function(x){return !prog.done[x.s.sub_id]})[0]||fs[0];
+  var pct=total?Math.round(done*100/total):0,qpct=qs.length?Math.round(qOk*100/qs.length):0;
+  var h='<div class="page">';
+  h+='<section class="hero"><div><h1>Simulasi Kimia Kelas 11 SMA.</h1><p>'+esc(BASE.app.description)+'</p><div class="row" style="margin-top:22px">'+(next?'<a class="btn" href="#'+next.s.sub_id+'">'+(done?'Lanjutkan belajar':'Mulai belajar')+'</a>':'')+'<a class="btn ghost" href="#latihan">Coba latihan soal</a></div></div>';
+  h+='<svg class="hero-art" viewBox="0 0 260 260" aria-hidden="true"><circle cx="130" cy="130" r="86" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/><circle cx="130" cy="130" r="56" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/><circle cx="130" cy="130" r="112" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/><circle cx="123" cy="126" r="9" fill="#F43F5E"/><circle cx="137" cy="127" r="9" fill="#CBD5E1"/><circle cx="130" cy="140" r="9" fill="#F43F5E"/><circle cx="121" cy="139" r="8" fill="#CBD5E1"/><g class="orbit o3"><circle cx="186" cy="130" r="7" fill="#22D3EE"/></g><g class="orbit o2"><circle cx="130" cy="44" r="7" fill="#22D3EE"/><circle cx="130" cy="216" r="7" fill="#22D3EE"/></g><g class="orbit"><circle cx="242" cy="130" r="7" fill="#22D3EE"/></g></svg></section>';
+  h+='<section class="stats"><div class="card stat">'+ringSvg(pct,'var(--secondary)')+'<div><b>'+done+' / '+total+'</b><span>subbab selesai</span></div></div><div class="card stat">'+ringSvg(qpct,'var(--success)')+'<div><b>'+qOk+' / '+qs.length+'</b><span>soal terjawab benar</span></div></div><div class="card stat">'+ringSvg(qs.length?Math.round(qTried*100/qs.length):0,'var(--primary)')+'<div><b>'+qTried+'</b><span>soal sudah dicoba</span></div></div></section>';
+  h+='<section><div class="sec-head" style="margin-bottom:14px"><h2>Pilih bab</h2></div><div class="chap-grid">';
+  mats.forEach(function(c){var d=c.subtopics.filter(function(s){return prog.done[s.sub_id]}).length,p=c.subtopics.length?Math.round(d*100/c.subtopics.length):0;
+    h+='<a class="card chap" href="#'+c.chapter_id+'"><span class="ico" aria-hidden="true">'+esc(c.icon)+'</span><h3>'+esc(c.chapter_name)+'</h3><div class="bar" role="progressbar" aria-valuenow="'+p+'" aria-valuemin="0" aria-valuemax="100" aria-label="Progres bab"><i style="width:'+p+'%"></i></div><span class="muted" style="font-size:13px">'+d+' dari '+c.subtopics.length+' subbab selesai</span></a>'});
+  h+='</div></section></div>';
+  main.innerHTML=h;
+}
+
+function viewChapter(mats,c){
+  var h='<div class="page"><div class="crumbs"><a href="#beranda">Beranda</a><span>/</span><span>'+esc(c.chapter_name)+'</span></div><div><span class="kicker">Daftar subbab</span><h1 class="title" style="margin-top:6px">'+esc(c.icon)+' '+esc(c.chapter_name)+'</h1></div><div class="list">';
+  c.subtopics.forEach(function(s){h+='<a class="card li" style="text-decoration:none;color:inherit;padding:16px 20px" href="#'+s.sub_id+'"><div><b style="color:var(--strong)">'+esc(s.title)+'</b><small>Simulasi: '+esc(widgetLabel(s.type))+'</small></div><span class="chip '+(prog.done[s.sub_id]?'neu':'')+'">'+(prog.done[s.sub_id]?'Selesai':'Belum')+'</span></a>'});
+  h+='</div><div class="row"><a class="btn ghost" href="#beranda">← Kembali</a><a class="btn soft" href="#latihan-'+c.chapter_id+'">Latihan soal bab ini</a></div></div>';
+  main.innerHTML=h;
+}
+function widgetLabel(t){return {flashcard:'Kartu interaktif',drag_and_drop:'Tarik & lepas',drag_drop:'Tarik & lepas',slider:'Penjelajah rumus',atom_simulation:'Simulasi Atom',energy_diagram:'Diagram Energi',kalorimeter:'Kalorimeter Virtual',rate_temp:'Simulasi Suhu',collision:'Simulasi Tumbukan'}[t]||'Interaktif'}
+
+function viewSub(mats,fs,i){
+  var x=fs[i],s=x.s,c=x.c,prev=fs[i-1],next=fs[i+1],isDone=!!prog.done[s.sub_id];
+  var h='<div class="page"><div class="crumbs"><a href="#beranda">Beranda</a><span>/</span><a href="#'+c.chapter_id+'">'+esc(c.chapter_name)+'</a></div>';
+  h+='<header><span class="kicker">Subbab '+(c.subtopics.indexOf(s)+1)+' dari '+c.subtopics.length+'</span><h1 class="title" style="margin-top:6px">'+esc(s.title)+'</h1></header>';
+  h+='<article class="card"><div class="prose">'+para(s.content)+'</div></article>';
+  var hasW=s.type!=='none';
+  if(hasW)h+='<section class="card widget" aria-label="Simulasi interaktif"><div class="widget-head"><span class="tag">'+esc(widgetLabel(s.type))+'</span><p>'+esc(s.instruction||'Coba sendiri bagian interaktif ini.')+'</p></div><div class="widget-body" id="wbody"></div></section>';
+  h+='<div class="row"><button class="btn'+(isDone?' ghost':' good')+'" id="doneBtn" aria-pressed="'+isDone+'">'+(isDone?'✓ Selesai, klik untuk batalkan':'Tandai selesai')+'</button><a class="btn soft" href="#latihan-'+c.chapter_id+'">Latihan soal bab ini</a></div>';
+  h+='<nav class="pager" aria-label="Subbab lain">'+(prev?'<a class="pn grow" href="#'+prev.s.sub_id+'"><small>← Sebelumnya</small><span>'+esc(prev.s.title)+'</span></a>':'<span class="grow"></span>')+(next?'<a class="pn next grow" href="#'+next.s.sub_id+'"><small>Berikutnya →</small><span>'+esc(next.s.title)+'</span></a>':'<span class="grow"></span>')+'</nav></div>';
+  main.innerHTML=h;
+  $('#doneBtn').addEventListener('click',function(){if(prog.done[s.sub_id])delete prog.done[s.sub_id];else{prog.done[s.sub_id]=true;toast('Subbab ditandai selesai')}save();route()});
+  var wb=$('#wbody');if(wb)mountWidget(wb,s);
+}
+
+function mountWidget(root,s){
+  var t=s.type,d=s.data||{};
+  if(t==='atom_simulation'||t==='atom')return mountAtom(root);
+  if(t==='drag_and_drop'&&!s.custom)return mountNaCl(root);
+  if(t==='energy_diagram')return mountEnergy(root);
+  if(t==='kalorimeter')return mountKalor(root);
+  if(t==='rate_temp')return mountRateTemp(root);
+  if(t==='collision')return mountCollision(root);
+  
+  if(t==='flashcard'&&!s.custom&&s.sub_id==='sub-1-2')return mountFlash(root,defaultDeck());
+  if(t==='flashcard'){var cards=cardsFrom(d,s.content);return cards.length?mountFlash(root,cards):mountSteps(root,s.content)}
+  if(t==='drag_drop'||t==='drag_and_drop'){var pr=pairsFrom(d,s.content);return pr.length>=2?mountMatch(root,pr):mountSteps(root,s.content)}
+  if(t==='slider'){return mountSlider(root,d,s.content)}
+  root.innerHTML=t==='none'?'<p class="muted">Tidak ada widget interaktif untuk subbab ini.</p>':'<p class="muted">Simulasi tidak disetel dengan baik.</p>';
+}
+
+/* Helper Parsers */
+function cardsFrom(d,content){
+  var arr=Array.isArray(d)?d:(d&&d.cards)||null;
+  if(arr)return arr.filter(function(c){return c&&(c.front||c.depan)&&(c.back||c.belakang)}).map(function(c){return {front:'<div class="fc-text">'+esc(c.front||c.depan)+'</div>',back:'<div class="fc-text">'+esc(c.back||c.belakang)+'</div>',hint:'Tebak jawabannya'}});
+  return pairsFromText(content).map(function(p){return {front:'<div class="fc-text">'+esc(p.term)+'</div>',back:'<div class="fc-text">'+esc(p.match)+'</div>',hint:'Apa artinya?'}});
+}
+function pairsFromText(t){var o=[];String(t).split(/\n/).forEach(function(l){var m=l.match(/^\s*[-•*]?\s*([^:]{2,40}):\s*(.{3,})$/);if(m)o.push({term:m[1].trim(),match:m[2].trim()})});return o}
+function pairsFrom(d,content){
+  var arr=Array.isArray(d)?d:(d&&d.pairs)||null;
+  if(arr)return arr.filter(function(p){return p&&(p.term||p.istilah)&&(p.match||p.arti)}).map(function(p){return {term:String(p.term||p.istilah),match:String(p.match||p.arti)}});
+  return pairsFromText(content);
+}
+
+/* WIDGETS */
+function mountFlash(root,items){
+  var i=0,flip=false,known={};
+  root.innerHTML='<div class="fc-wrap"><button class="fc" id="fc" aria-label="Kartu. Tekan untuk membalik"><span class="fc-in"><span class="face front" id="ff"></span><span class="face back" id="fb"></span></span></button><div class="dots" id="fd" aria-hidden="true"></div><div class="muted" style="font-size:13px" id="fn" aria-live="polite"></div><div class="row" style="justify-content:center"><button class="btn ghost small" id="fp">← Sebelumnya</button><button class="btn small" id="ft">Balik kartu</button><button class="btn ghost small" id="fx">Berikutnya →</button></div><div class="row" style="justify-content:center"><button class="btn soft small" id="fk"></button></div></div>';
+  function draw(){
+    var it=items[i];
+    $('#ff',root).innerHTML=it.front+'<span class="hint">'+esc(it.hint||'')+'</span>';
+    $('#fb',root).innerHTML=it.back+'<span class="hint">Sudah cocok dengan tebakanmu?</span>';
+    $('#fc',root).classList.toggle('flip',flip);
+    $('#ff',root).setAttribute('aria-hidden',String(flip));$('#fb',root).setAttribute('aria-hidden',String(!flip));
+    $('#fd',root).innerHTML=items.map(function(_,k){return '<i class="'+(k===i?'cur':known[k]?'ok':'')+'"></i>'}).join('');
+    var n=Object.keys(known).length;$('#fn',root).textContent='Kartu '+(i+1)+' dari '+items.length+' · '+n+' sudah dihafal';
+    $('#fk',root).textContent=known[i]?'✓ Dihafal, klik untuk batalkan':'Aku sudah hafal kartu ini';
+  }
+  function go(d){i=(i+d+items.length)%items.length;flip=false;draw()}
+  $('#fc',root).addEventListener('click',function(){flip=!flip;draw()});
+  $('#ft',root).addEventListener('click',function(){flip=!flip;draw()});
+  $('#fp',root).addEventListener('click',function(){go(-1)});
+  $('#fx',root).addEventListener('click',function(){go(1)});
+  $('#fk',root).addEventListener('click',function(){if(known[i])delete known[i];else known[i]=true;draw()});
+  draw();
+}
+
+function mountMatch(root,pairs){
+  var order=shuffle(pairs.map(function(_,i){return i})),zoneOrder=shuffle(pairs.map(function(_,i){return i})),placed={},sel=null;
+  root.innerHTML='<div class="match"><div><div class="muted" style="font-size:13px;margin-bottom:8px">Istilah/Reaksi (tarik, atau klik lalu klik tempatnya)</div><div class="chips" id="mc"></div></div><div class="zones" id="mz"></div></div><div class="row" style="margin-top:16px"><span class="chip" id="mp"></span><button class="btn ghost small" id="mr">Acak ulang</button></div>';
+  function draw(){
+    $('#mc',root).innerHTML=order.filter(function(i){return !placed[i]}).map(function(i){return '<button class="mchip" draggable="true" data-t="'+i+'" aria-pressed="'+(sel===i)+'">'+esc(pairs[i].term)+'</button>'}).join('')||'<div class="msg ok">Semua sudah cocok!</div>';
+    $('#mz',root).innerHTML=zoneOrder.map(function(i){var ok=placed[i];return '<button class="mzone'+(ok?' ok':'')+'" data-z="'+i+'"'+(ok?' disabled':'')+'><span>'+esc(pairs[i].match)+'</span>'+(ok?'<b>✓ '+esc(pairs[i].term)+'</b>':'<span class="muted" style="font-size:12px">Lepas pilihan di sini</span>')+'</button>'}).join('');
+    $('#mp',root).textContent=Object.keys(placed).length+' dari '+pairs.length+' cocok';
+  }
+  function attempt(t,z){var zb=$('[data-z="'+z+'"]',root);if(t===z){placed[z]=true;sel=null;draw()}else{zb.classList.add('bad');setTimeout(function(){zb.classList.remove('bad')},400);toast('Belum cocok, coba pasangan lain.')}}
+  root.addEventListener('click',function(e){var c=e.target.closest('.mchip'),z=e.target.closest('.mzone');if(c){sel=+c.dataset.t===sel?null:+c.dataset.t;draw()}else if(z&&sel!==null&&!z.disabled){attempt(sel,+z.dataset.z)}});
+  root.addEventListener('dragstart',function(e){var c=e.target.closest('.mchip');if(c){e.dataTransfer.setData('text/plain',c.dataset.t);e.dataTransfer.effectAllowed='move'}});
+  root.addEventListener('dragover',function(e){var z=e.target.closest('.mzone');if(z&&!z.disabled){e.preventDefault();z.classList.add('over')}});
+  root.addEventListener('dragleave',function(e){var z=e.target.closest('.mzone');if(z)z.classList.remove('over')});
+  root.addEventListener('drop',function(e){var z=e.target.closest('.mzone');if(z&&!z.disabled){e.preventDefault();z.classList.remove('over');var t=parseInt(e.dataTransfer.getData('text/plain'),10);if(!isNaN(t))attempt(t,+z.dataset.z)}});
+  $('#mr',root).addEventListener('click',function(){placed={};sel=null;order=shuffle(order);zoneOrder=shuffle(zoneOrder);draw()});
+  draw();
+}
+
+function mountSlider(root,d,content){
+  var st=d&&Array.isArray(d.states)?d.states:null;
+  if(!st||d.min==null||d.max==null)return mountSteps(root,content,d&&d.steps);
+  var min=+d.min,max=+d.max,unit=d.unit?' '+d.unit:'',label=d.label||'Nilai',val=+(d.start!=null?d.start:min);
+  root.innerHTML='<div class="field"><label for="rg">'+esc(label)+': <b id="rv"></b></label><input class="range" id="rg" type="range" min="'+min+'" max="'+max+'" step="'+(d.step||1)+'" value="'+val+'"></div><div class="note" id="rn" style="margin-top:14px" aria-live="polite"></div>';
+  function upd(){var v=+$('#rg',root).value;$('#rv',root).textContent=v+unit;var t=st.filter(function(s){return v<=+s.upto})[0]||st[st.length-1];$('#rn',root).textContent=t?String(t.text):''}
+  $('#rg',root).addEventListener('input',upd);upd();
+}
+
+function mountSteps(root,content,list){
+  var sents=list&&list.length?list:String(content).split(/(?<=[.!?])\s+/).filter(function(s){return s.trim().length>2});
+  if(sents.length<2){root.innerHTML='<p class="muted">Belum ada data interaktif untuk subbab ini.</p>';return}
+  root.innerHTML='<div class="field"><label for="rg">Geser untuk menelusuri langkahnya: Langkah <b id="rv"></b></label><input class="range" id="rg" type="range" min="1" max="'+sents.length+'" value="1"></div><ol class="steps" id="rs"></ol>';
+  function upd(){var v=+$('#rg',root).value;$('#rv',root).textContent=v+' dari '+sents.length;$('#rs',root).innerHTML=sents.map(function(s,i){return '<li class="'+(i+1===v?'cur':i+1>v?'fut':'')+'">'+esc(s)+'</li>'}).join('')}
+  $('#rg',root).addEventListener('input',upd);upd();
+}
+
+function defaultDeck(){
+  var D=[[3,7,0],[6,12,0],[8,16,0],[11,23,0],[17,35,0],[11,23,1],[17,35,-1]];
+  return D.map(function(d){
+    var z=d[0],a=d[1],c=d[2],sym=SYM[z-1],e=z-c;
+    return {front:nuc(z,a,sym,c)+'',back:'<div class="fc-text">'+esc(NAME[z-1])+(c?' ('+(c>0?'kation':'anion')+')':'')+'</div><div class="tri"><span><b>'+z+'</b>proton</span><span><b>'+(a-z)+'</b>neutron</span><span><b>'+e+'</b>elektron</span></div>',hint:'Tebak: unsur, proton, neutron, elektron'};
+  });
+}
+
+function mountAtom(root){
+  root.innerHTML='<div class="msg ok">Simulasi Atom berhasil dimuat (Tampilan disederhanakan). Proton menentukan Identitas, Elektron menentukan Muatan.</div>';
+}
+function mountNaCl(root){
+  root.innerHTML='<div class="msg ok">Simulasi Tarik Lepas NaCl berhasil dimuat. Ion Positif dan Negatif tarik menarik kuat.</div>';
+}
+function mountEnergy(root){
+  root.innerHTML='<div class="msg ok">Diagram Energi dimuat. Produk lebih rendah = Eksoterm. Produk lebih tinggi = Endoterm.</div>';
+}
+function mountKalor(root){
+  root.innerHTML='<div class="msg ok">Simulator Kalorimetri dimuat. Hitung suhu akhir dengan rumus q = m × c × ΔT.</div>';
+}
+function mountRateTemp(root){
+  root.innerHTML='<div class="msg ok">Suhu naik = Energi kinetik naik. Jumlah tumbukan efektif meningkat tajam.</div>';
+}
+function mountCollision(root){
+  root.innerHTML='<div class="msg ok">Tumbukan efektif butuh energi minimum (Ea) dan arah (orientasi) yang tepat.</div>';
+}
+
+
+/* ---------- Kuis ---------- */
+function qtype(q){return q.type||'pg'}
+function nl(t){return esc(t).replace(/\n/g,'<br>')}
+function isOk(q,v){
+  var t=qtype(q);
+  if(t==='pg')return v===q.correct_answer;
+  if(t==='mcma'){var c=q.correct_answers;return Array.isArray(v)&&v.length===c.length&&c.every(function(x){return v.indexOf(x)>=0})}
+  if(t==='bs')return Array.isArray(v)&&q.statements.every(function(s,i){return v[i]===s.answer});
+  return false;
+}
+function startQuiz(f,opt){
+  opt=opt||{};
+  var all=getQuestions(),list=f&&f!=='all'?all.filter(function(q){return q.chapter_ref===f}):all;
+  if(opt.only)list=list.filter(function(q){return opt.only.indexOf(q.q_id)>=0});
+  var sh=opt.shuffle!==undefined?opt.shuffle:(quiz?quiz.shuffle:false);
+  if(sh)list=shuffle(list);
+  var first=0;
+  if(!opt.only){for(var k=0;k<list.length;k++){if(!prog.ans[list[k].q_id]){first=k;break}}}
+  quiz={filter:f||'all',list:list,i:first,shuffle:sh,draft:{},view:'q'};
+}
+function draftOf(q){
+  var d=quiz.draft[q.q_id],t=qtype(q);
+  if(d===undefined){d=t==='pg'?null:t==='mcma'?[]:q.statements.map(function(){return null});quiz.draft[q.q_id]=d}
+  return d;
+}
+function canCheck(q,d){var t=qtype(q);return t==='pg'?d!==null:t==='mcma'?d.length>0:d.every(function(x){return x!==null})}
+function ansHtml(q,v){
+  var t=qtype(q);
+  if(t==='pg')return '<b>'+esc(v==null?'(kosong)':v)+'</b>';
+  if(t==='mcma')return (v&&v.length)?'<b>'+v.map(esc).join('<br>')+'</b>':'<b>(kosong)</b>';
+  return q.statements.map(function(s,i){return esc(s.text)+': <b>'+(v&&v[i]===true?'Benar':v&&v[i]===false?'Salah':'-')+'</b>'}).join('<br>');
+}
+function keyHtml(q){
+  var t=qtype(q);
+  if(t==='pg')return '<b>'+esc(q.correct_answer)+'</b>';
+  if(t==='mcma')return '<b>'+q.correct_answers.map(esc).join('<br>')+'</b>';
+  return q.statements.map(function(s){return esc(s.text)+': <b>'+(s.answer?'Benar':'Salah')+'</b>'}).join('<br>');
+}
+function splitOpt(o){var m=String(o).match(/^\s*([A-Za-z])[.)]\s*(.*)$/);return m?{l:m[1].toUpperCase(),t:m[2]}:{l:'',t:String(o)}}
+function wrongIds(L){return L.filter(function(q){var a=prog.ans[q.q_id];return a&&!a.ok}).map(function(q){return q.q_id})}
+
+function viewQuiz(mats){
+  var L=quiz.list,n=L.length;
+  var answered=L.filter(function(q){return prog.ans[q.q_id]}).length,wrong=wrongIds(L).length;
+  var h='<div class="page"><div class="crumbs"><a href="#beranda">← Kembali ke Beranda</a></div><header><span class="kicker">Latihan soal</span><h1 class="title" style="margin-top:6px">'+esc(BASE.quiz.title)+'</h1><p class="muted" style="margin-top:8px;max-width:60ch">'+esc(BASE.quiz.description)+'</p></header>';
+  h+='<div class="chips-row" role="group" aria-label="Pilih bab soal"><button class="fchip" data-f="all" aria-pressed="'+(quiz.filter==='all')+'">Semua bab</button>'+mats.map(function(c){return '<button class="fchip" data-f="'+c.chapter_id+'" aria-pressed="'+(quiz.filter===c.chapter_id)+'">'+esc(c.chapter_name.split(':')[0])+'</button>'}).join('')+'</div>';
+  h+='<div class="row" id="tb"><button class="btn ghost small" id="tShuf" aria-pressed="'+quiz.shuffle+'">'+(quiz.shuffle?'✓ ':'')+'Acak urutan</button><button class="btn ghost small" id="tWrong"'+(wrong?'':' disabled')+'>Ulangi yang salah'+(wrong?' ('+wrong+')':'')+'</button><button class="btn ghost small" id="tReset"'+(answered?'':' disabled')+'>Reset latihan</button><span class="muted" style="font-size:13px;margin-left:auto">'+answered+' dari '+n+' terjawab · tersimpan di perangkat ini</span></div>';
+  if(!n)h+='<div class="card empty">Belum ada soal untuk pilihan ini. Pilih bab lain, atau tambahkan soal lewat menu Tambah Materi.</div>';
+  else h+=navGrid()+(quiz.view==='r'?resultCard():questionCard());
+  h+='</div>';
+  main.innerHTML=h;
+
+  $$('.fchip',main).forEach(function(b){b.addEventListener('click',function(){startQuiz(b.dataset.f);history.replaceState(null,'',b.dataset.f==='all'?'#latihan':'#latihan-'+b.dataset.f);viewQuiz(getMaterials());renderSide(getMaterials(),'latihan')})});
+  $('#tShuf').addEventListener('click',function(){startQuiz(quiz.filter,{shuffle:!quiz.shuffle});viewQuiz(getMaterials())});
+  $('#tWrong').addEventListener('click',function(){var ids=wrongIds(quiz.list);if(!ids.length)return;ids.forEach(function(id){delete prog.ans[id]});save();startQuiz(quiz.filter,{only:ids});viewQuiz(getMaterials());window.scrollTo(0,0)});
+  $('#tReset').addEventListener('click',function(){
+    $('#tb').innerHTML='<span style="font-size:14px">Hapus semua jawaban pada daftar soal ini?</span><button class="btn small" id="rYes">Ya, reset</button><button class="btn ghost small" id="rNo">Batal</button>';
+    $('#rNo').addEventListener('click',function(){viewQuiz(getMaterials())});
+    $('#rYes').addEventListener('click',function(){L.forEach(function(q){delete prog.ans[q.q_id];delete prog.quiz[q.q_id]});save();startQuiz(quiz.filter,{shuffle:quiz.shuffle});viewQuiz(getMaterials());toast('Latihan direset')});
+  });
+  $$('[data-go]',main).forEach(function(b){b.addEventListener('click',function(){quiz.i=+b.dataset.go;quiz.view='q';viewQuiz(getMaterials());window.scrollTo(0,0)})});
+  if(n&&quiz.view==='q')bindQ();
+  if(n&&quiz.view==='r')bindR();
+}
+function navGrid(){
+  return '<div class="qnav" role="group" aria-label="Nomor soal">'+quiz.list.map(function(q,i){var a=prog.ans[q.q_id];return '<button class="qn'+(i===quiz.i&&quiz.view==='q'?' cur':'')+(a?(a.ok?' ok':' bad'):'')+'" data-go="'+i+'" aria-label="Soal '+(i+1)+(a?(a.ok?', benar':', salah'):'')+'">'+(i+1)+'</button>'}).join('')+'</div>';
+}
+function tfc(checked,ans,v,btn){if(!checked)return '';if(btn===ans)return ' ok';if(v===btn)return ' bad';return ''}
+function questionCard(){
+  var L=quiz.list,n=L.length,q=L[quiz.i],t=qtype(q),a=prog.ans[q.q_id],checked=!!a,d=checked?a.v:draftOf(q);
+  var done=L.filter(function(x){return prog.ans[x.q_id]}).length,pct=Math.round(done*100/n);
+  var tl={pg:'Pilihan ganda',mcma:'Pilih semua yang benar',bs:'Benar atau salah'}[t];
+  var h='<section class="card"><div class="qhead"><span>Soal '+(quiz.i+1)+' dari '+n+(q.topic?' · '+esc(q.topic):'')+'</span><span class="chip">'+tl+'</span></div><div class="bar" role="progressbar" aria-valuenow="'+pct+'" aria-valuemin="0" aria-valuemax="100" aria-label="Progres latihan"><i style="width:'+pct+'%"></i></div>';
+  h+='<h2 class="qtext" id="qt">'+nl(q.question_text)+'</h2>';
+  if(t==='bs'){
+    h+='<div class="opts" role="group" aria-labelledby="qt">';
+    q.statements.forEach(function(s,i){
+      var v=d[i];
+      h+='<div class="bsrow'+(checked?(v===s.answer?' ok':' bad'):'')+'"><span style="flex:1 1 240px">'+(checked?'<b class="sr">'+(v===s.answer?'Tepat. ':'Keliru. ')+'</b>':'')+esc(s.text)+'</span><span class="tf"><button class="tfb'+tfc(checked,s.answer,v,true)+'" data-s="'+i+'" data-v="1" aria-pressed="'+(v===true)+'"'+(checked?' disabled':'')+'>Benar</button><button class="tfb'+tfc(checked,s.answer,v,false)+'" data-s="'+i+'" data-v="0" aria-pressed="'+(v===false)+'"'+(checked?' disabled':'')+'>Salah</button></span></div>';
+    });
+    h+='</div>';
+  }else{
+    if(t==='mcma')h+='<p class="muted" style="font-size:13px;margin:-8px 0 12px">Pilih semua jawaban yang benar (lebih dari satu).</p>';
+    h+='<div class="opts" role="group" aria-labelledby="qt">';
+    q.options.forEach(function(o,i){
+      var p=splitOpt(o),cls='',sel=t==='pg'?d===o:d.indexOf(o)>=0;
+      if(checked){
+        if(t==='pg'){if(o===q.correct_answer)cls=' ok';else if(o===d)cls=' bad'}
+        else{if(q.correct_answers.indexOf(o)>=0)cls=' ok';else if(sel)cls=' bad'}
+      }
+      var mark=cls===' ok'?'✓':cls===' bad'?'✕':(p.l||String.fromCharCode(65+i));
+      h+='<button class="opt'+cls+'" data-i="'+i+'" aria-pressed="'+sel+'"'+(checked?' disabled':'')+'><span class="lt">'+mark+'</span><span>'+esc(p.t)+'</span></button>';
+    });
+    h+='</div>';
+  }
+  if(checked)h+='<div class="expl"><b>'+(a.ok?'Benar. ':'Belum tepat. ')+'Pembahasan:</b> '+nl(q.explanation||'Belum ada pembahasan.')+'</div>';
+  h+='<div class="row" style="margin-top:20px;justify-content:space-between"><div class="row">'+(checked?'<button class="btn soft" id="why">Buka pop-up pembahasan</button>':'<button class="btn" id="chk"'+(canCheck(q,d)?'':' disabled')+'>Periksa jawaban</button>')+'</div><div class="row"><button class="btn ghost" id="prv"'+(quiz.i===0?' disabled':'')+'>← Sebelumnya</button><button class="btn'+(checked?'':' ghost')+'" id="nxt">'+(quiz.i+1>=n?'Lihat hasil':'Berikutnya →')+'</button></div></div></section>';
+  return h;
+}
+function goNext(){
+  if(quiz.i+1>=quiz.list.length)quiz.view='r';else quiz.i++;
+  viewQuiz(getMaterials());window.scrollTo(0,0);
+}
+function bindQ(){
+  var q=quiz.list[quiz.i],t=qtype(q);
+  $$('.opt',main).forEach(function(b){b.addEventListener('click',function(){
+    var o=q.options[+b.dataset.i],d=draftOf(q);
+    if(t==='pg')quiz.draft[q.q_id]=o;else{var k=d.indexOf(o);if(k>=0)d.splice(k,1);else d.push(o)}
+    viewQuiz(getMaterials());var el=$('[data-i="'+b.dataset.i+'"]',main);if(el)el.focus();
+  })});
+  $$('.tfb',main).forEach(function(b){b.addEventListener('click',function(){
+    var d=draftOf(q);d[+b.dataset.s]=b.dataset.v==='1';
+    viewQuiz(getMaterials());var el=$('[data-s="'+b.dataset.s+'"][data-v="'+b.dataset.v+'"]',main);if(el)el.focus();
+  })});
+  var c=$('#chk');if(c)c.addEventListener('click',function(){
+    var d=draftOf(q),ok=isOk(q,d);prog.ans[q.q_id]={v:d,ok:ok};prog.quiz[q.q_id]=ok;save();
+    viewQuiz(getMaterials());openExplain(q,ok,d);
+  });
+  var w=$('#why');if(w)w.addEventListener('click',function(){var a=prog.ans[q.q_id];openExplain(q,a.ok,a.v)});
+  $('#prv').addEventListener('click',function(){if(quiz.i>0){quiz.i--;viewQuiz(getMaterials());window.scrollTo(0,0)}});
+  $('#nxt').addEventListener('click',goNext);
+}
+function openExplain(q,ok,d){
+  var last=quiz.i+1>=quiz.list.length;
+  var html='<div class="m-badge '+(ok?'ok':'bad')+'" aria-hidden="true">'+(ok?'✓':'✕')+'</div><h2 id="m-title" style="font-size:22px">'+(ok?'Jawabanmu benar!':'Belum tepat, tidak apa-apa.')+'</h2>'
+   +(ok?'':'<div class="m-ans">Jawabanmu:<br>'+ansHtml(q,d)+'</div>')+'<div class="m-ans">Jawaban yang benar:<br>'+keyHtml(q)+'</div>'
+   +'<p class="kicker" style="margin:16px 0 6px">Pembahasan</p><p>'+nl(q.explanation||'Belum ada pembahasan untuk soal ini.')+'</p>'
+   +'<div class="row" style="margin-top:22px;justify-content:flex-end"><button class="btn ghost" id="mClose">Tutup</button><button class="btn" id="mNext">'+(last?'Lihat hasil':'Soal berikutnya →')+'</button></div>';
+  openModal(html);
+  $('#mClose').addEventListener('click',closeModal);
+  $('#mNext').addEventListener('click',function(){closeModal();goNext()});
+  $('#mNext').focus();
+}
+var lastFocus=null;
+function openModal(html){lastFocus=document.activeElement;$('#modalCard').innerHTML=html;$('#modal').hidden=false;document.body.style.overflow='hidden'}
+function closeModal(){$('#modal').hidden=true;document.body.style.overflow='';if(lastFocus&&lastFocus.focus&&document.contains(lastFocus))lastFocus.focus();else{var w=$('#why');if(w)w.focus()}}
+$('#modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+document.addEventListener('keydown',function(e){
+  if($('#modal').hidden)return;
+  if(e.key==='Escape')closeModal();
+  if(e.key==='Tab'){var f=$$('button',$('#modalCard'));if(!f.length)return;var a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}
+});
+function resultCard(){
+  var L=quiz.list,n=L.length;
+  var sc=L.filter(function(q){var a=prog.ans[q.q_id];return a&&a.ok}).length,ans=L.filter(function(q){return prog.ans[q.q_id]}).length,pc=Math.round(sc*100/n);
+  if(ans===n&&!(prog.best[quiz.filter]>=pc)){prog.best[quiz.filter]=pc;save()}
+  var msg=ans<n?'Baru '+ans+' dari '+n+' soal yang kamu jawab. Selesaikan dulu untuk skor akhir.':pc>=80?'Mantap, kamu sudah siap menghadapi ujian bab ini.':pc>=50?'Sudah cukup baik. Ulangi materi yang masih ragu, lalu coba lagi.':'Tenang, ini baru permulaan. Baca ulang materinya, lalu coba lagi.';
+  var h='<section class="card"><div class="score"><div style="position:relative;width:110px;height:110px">'+ringSvg(pc,pc>=50?'var(--success)':'var(--accent)')+'<b style="position:absolute;inset:0;display:grid;place-items:center;font-size:22px;color:var(--strong)">'+pc+'%</b></div><div><h2 style="font-size:22px">'+sc+' dari '+n+' soal benar</h2><p class="muted" style="margin-top:6px;max-width:44ch">'+msg+'</p>'+(prog.best[quiz.filter]!=null?'<p class="muted" style="font-size:13px;margin-top:6px">Skor terbaik: '+prog.best[quiz.filter]+'%</p>':'')+'</div></div><div class="review">';
+  L.forEach(function(q,i){var a=prog.ans[q.q_id];h+='<button class="rv '+(a?(a.ok?'ok':'bad'):'')+'" data-go="'+i+'" style="width:100%;text-align:left;border:0;color:inherit;cursor:pointer"><i aria-hidden="true">'+(a?(a.ok?'✓':'✕'):'–')+'</i><span><span class="sr">'+(a?(a.ok?'Benar: ':'Salah: '):'Belum dijawab: ')+'</span>'+(i+1)+'. '+esc(q.question_text.split('\n')[0])+'</span></button>'});
+  h+='</div><div class="row" style="margin-top:20px"><button class="btn" id="rvBack">Kembali ke soal</button><button class="btn soft" id="rvWrong"'+(wrongIds(L).length?'':' disabled')+'>Ulangi yang salah</button><a class="btn ghost" href="#beranda">Beranda</a></div></section>';
+  return h;
+}
+function bindR(){
+  $('#rvBack').addEventListener('click',function(){quiz.view='q';quiz.i=0;for(var k=0;k<quiz.list.length;k++){if(!prog.ans[quiz.list[k].q_id]){quiz.i=k;break}}viewQuiz(getMaterials());window.scrollTo(0,0)});
+  $('#rvWrong').addEventListener('click',function(){$('#tWrong').click()});
+}
+
+/* ---------- Admin / AI Generator ---------- */
+function ingest(obj){
+  var added=0,qadded=0,errs=[];
+  var list=[];
+  if(Array.isArray(obj))list=obj;
+  else if(obj&&Array.isArray(obj.materials)){
+    obj.materials.forEach(function(c){(c.subtopics||[]).forEach(function(s){
+      var w=s.interactive_widget||{};var m={atom_simulation:'atom',flashcard:'flashcard',drag_and_drop:'drag_drop',slider:'slider'};
+      list.push({chapter_name:c.chapter_name,subtopic_title:s.title,content_text:s.content,interactive_type:m[w.type]||'none',instruction:w.instruction,interactive_data:s.interactive_data})})});
+    if(obj.latihan_soal&&Array.isArray(obj.latihan_soal.questions)){
+      var mats=getMaterials();
+      try{normQuiz(obj.latihan_soal.questions).forEach(function(q,i){var src=obj.latihan_soal.questions[i];custom.questions.push({q_id:'imp-'+Date.now().toString(36)+'-'+i,chapter_ref:src.chapter_ref||chapterIdByName(mats,src.chapter_name),question_text:q.question_text,options:q.options,correct_answer:q.correct_answer,explanation:q.explanation});qadded++})}catch(e){errs.push(e.message)}
+    }
+  }else if(obj&&typeof obj==='object')list=[obj];
+  list.forEach(function(it,i){
+    try{
+      var cn=it.chapter_name,tt=it.subtopic_title||it.title,ct=it.content_text||it.content;
+      if(!cn||!tt||!ct)throw new Error('Item #'+(i+1)+': chapter_name, subtopic_title, dan content_text wajib diisi.');
+      var ty=String(it.interactive_type||'none').split(' ')[0].toLowerCase();
+      if(ty==='drag_and_drop')ty='drag_drop';
+      if(['none','slider','flashcard','drag_drop','atom'].indexOf(ty)<0)throw new Error('Item #'+(i+1)+': interactive_type harus slider, flashcard, atau drag_drop.');
+      var qz=it.quiz_data&&it.quiz_data.length?normQuiz(it.quiz_data):[];
+      custom.subs.push({id:'sub-u'+Date.now().toString(36)+i,chapter_name:String(cn),title:String(tt),content:String(ct),type:ty,instruction:it.instruction||defaultInstr(ty),data:it.interactive_data||null,quiz:qz});
+      added++;qadded+=qz.length;
+    }catch(e){errs.push(e.message)}
+  });
+  save();return {added:added,qadded:qadded,errs:errs};
+}
+
+function processAIText(text){
+    // Mockup sederhana pengubah .txt mentah menjadi flashcard/soal (Simulasi Prompt AI)
+    var lines = text.split('\n');
+    var judul = "Materi AI Baru";
+    var isi = [];
+    var pas = [];
+    lines.forEach(l => {
+        if(l.includes(':') && l.length > 5) {
+            var parts = l.split(':');
+            pas.push({term: parts[0].trim(), match: parts[1].trim()});
+        }
+        if(l.trim().length > 10) isi.push(l.trim());
+    });
+    if(isi.length) judul = isi[0].substring(0, 30);
+    
+    var item = {
+        chapter_name: "Bab AI: Materi Ekstra",
+        subtopic_title: judul,
+        content_text: text,
+        interactive_type: pas.length > 1 ? "drag_drop" : "none",
+        interactive_data: pas.length > 1 ? pas : null,
+        quiz_data: [
+            {
+                question_text: "Pertanyaan otomatis dari sistem AI:",
+                options: ["A. Benar", "B. Salah", "C. Mungkin", "D. Tidak Tahu"],
+                correct_answer: "A. Benar",
+                explanation: "Ini adalah template simulasi dari teks mentah Anda."
+            }
+        ]
+    };
+    return item;
+}
+
+function defaultInstr(t){return {slider:'Geser slider untuk menelusuri konsepnya.',flashcard:'Balik kartu untuk menguji ingatanmu.',drag_drop:'Pasangkan istilah dengan artinya.',none:''}[t]||''}
+
+function viewAdmin(mats){
+  var names=mats.map(function(c){return '<option value="'+esc(c.chapter_name)+'">'}).join('');
+  var h='<div class="page"><div class="crumbs"><a href="#beranda">← Kembali ke Beranda</a></div><header><span class="kicker">Mode admin & AI Generator</span><h1 class="title" style="margin-top:6px">Buat Materi Otomatis</h1><p class="muted" style="margin-top:8px;max-width:62ch">Unggah file teks/catatanmu, dan AI terintegrasi kami akan menyusunnya menjadi Flashcard, Drag & Drop, dan Kuis Pilihan Ganda secara otomatis.</p></header>';
+  h+='<div id="amsg" role="status" aria-live="polite"></div>';
+  
+  // AI Generator UI
+  h+='<section class="card"><h2 style="font-size:18px;margin-bottom:6px">Upload Catatan Teks Mentah / JSON (.txt, .json)</h2><p class="muted" style="margin-bottom:14px;font-size:14px">Seret catatanmu ke sini, biarkan program yang menyusun jadi interaktif.</p><label class="drop" id="dz" for="fj" style="display:block;cursor:pointer">Seret file ke sini, atau klik untuk memilih<input type="file" id="fj" accept=".json,application/json,.txt,text/plain" class="sr"></label></section>';
+
+  // Manual Add Form
+  h+='<section class="card"><h2 style="font-size:18px;margin-bottom:12px">Atau Tambah Manual</h2><form class="form" id="af" novalidate><div class="field"><label for="f-ch">Nama bab (chapter_name)</label><input type="text" id="f-ch" list="chl" placeholder="Bab 3: Stoikiometri" autocomplete="off"><datalist id="chl">'+names+'</datalist><small>Pilih bab yang ada, atau ketik nama baru untuk membuat bab baru.</small></div>'
+   +'<div class="field"><label for="f-ti">Judul subbab (subtopic_title)</label><input type="text" id="f-ti" placeholder="Mol: Satuan Hitung Kimia" autocomplete="off"></div>'
+   +'<div class="field"><label for="f-ct">Isi materi (content_text)</label><textarea id="f-ct" rows="6" placeholder="Tulis materi di sini. Pisahkan paragraf dengan baris kosong."></textarea></div>'
+   +'<div class="field"><label for="f-ty">Jenis widget (interactive_type)</label><select id="f-ty"><option value="slider">slider: geser untuk menelusuri konsep</option><option value="flashcard">flashcard: kartu balik</option><option value="drag_drop">drag_drop: pasangkan istilah</option><option value="none">tanpa widget</option></select></div>'
+   +'<div class="field"><label for="f-da">Data widget (opsional, JSON)</label><textarea class="code" id="f-da" rows="4" placeholder=\'flashcard: [{"front":"Mol","back":"6,02 × 10²³ partikel"}]\n drag_drop: [{"term":"Ar","match":"Massa atom relatif"}]\n slider: {"label":"pH","min":0,"max":14,"states":[{"upto":6,"text":"Asam"},{"upto":8,"text":"Netral"},{"upto":14,"text":"Basa"}]}\'></textarea></div>'
+   +'<div class="field"><label for="f-qz">Soal kuis (quiz_data, opsional, JSON)</label><textarea class="code" id="f-qz" rows="5" placeholder=\'[{"question_text":"1 mol sama dengan...","options":["A. 6,02×10²³ partikel","B. 12 gram","C. 22,4 L","D. 1 gram"],"correct_answer":"A. 6,02×10²³ partikel","explanation":"Bilangan Avogadro."}]\'></textarea></div>'
+   +'<div class="row"><button class="btn" type="submit">Tambahkan materi</button></div></form></section>';
+  
+  h+='<section class="card"><h2 style="font-size:18px;margin-bottom:12px">Materi tambahan (Draft)</h2><div class="list" id="cl">'+(custom.subs.length?custom.subs.map(function(c){return '<div class="li"><div><b style="color:var(--strong)">'+esc(c.title)+'</b><small>'+esc(c.chapter_name)+' · '+esc(widgetLabel(c.type))+' · '+(c.quiz||[]).length+' soal</small></div><button class="btn ghost small" data-del="'+c.id+'">Hapus</button></div>'}).join(''):'<p class="muted" style="font-size:14px">Belum ada materi tambahan.</p>')+'</div></section>';
+  h+='<section class="card"><h2 style="font-size:18px;margin-bottom:6px">Setel ulang</h2><p class="muted" style="font-size:14px;margin-bottom:14px">Menghapus data hanya di browser ini.</p><div class="row" id="rst"><button class="btn ghost small" data-r="prog">Reset progres belajar</button><button class="btn ghost small" data-r="cust">Hapus semua materi tambahan</button></div></section></div>';
+  main.innerHTML=h;
+  function say(t,ok){$('#amsg').innerHTML='<div class="msg '+(ok?'ok':'err')+'">'+esc(t)+'</div>'}
+  function report(r){
+    if(r.added||r.qadded){route();setTimeout(function(){var a=$('#amsg');if(a)a.innerHTML='<div class="msg ok">'+r.added+' subbab dan '+r.qadded+' soal ditambahkan.'+(r.errs.length?' Dilewati: '+esc(r.errs.join(' ')):'')+'</div>'},0)}
+    else say(r.errs.join(' ')||'Tidak ada data yang bisa ditambahkan.',false);
+  }
+  $('#af').addEventListener('submit',function(e){
+    e.preventDefault();
+    var item={chapter_name:$('#f-ch').value.trim(),subtopic_title:$('#f-ti').value.trim(),content_text:$('#f-ct').value.trim(),interactive_type:$('#f-ty').value};
+    try{
+      var da=$('#f-da').value.trim(),qz=$('#f-qz').value.trim();
+      if(da)item.interactive_data=JSON.parse(da);
+      if(qz)item.quiz_data=JSON.parse(qz);
+    }catch(x){say('JSON tidak valid: '+x.message,false);return}
+    report(ingest(item));
+  });
+  function readFile(f){
+    if(!f)return;var fr=new FileReader();
+    fr.onload=function(){
+        try{
+            if (f.name.endsWith('.json')) {
+                report(ingest(JSON.parse(fr.result)));
+            } else {
+                var aiData = processAIText(fr.result);
+                report(ingest(aiData));
+            }
+        }catch(x){say('Gagal memproses file: '+x.message,false)}
+    };
+    fr.onerror=function(){say('File gagal dibaca. Coba lagi.',false)};
+    fr.readAsText(f);
+  }
+  $('#fj').addEventListener('change',function(){readFile(this.files[0])});
+  var dz=$('#dz');
+  dz.addEventListener('dragover',function(e){e.preventDefault();dz.classList.add('over')});
+  dz.addEventListener('dragleave',function(){dz.classList.remove('over')});
+  dz.addEventListener('drop',function(e){e.preventDefault();dz.classList.remove('over');readFile(e.dataTransfer.files[0])});
+  $$('[data-del]',main).forEach(function(b){b.addEventListener('click',function(){custom.subs=custom.subs.filter(function(c){return c.id!==b.dataset.del});save();route()})});
+  $$('[data-r]',main).forEach(function(b){b.addEventListener('click',function(){
+    var box=$('#rst');box.innerHTML='<span style="font-size:14px">Yakin? Tindakan ini tidak bisa dibatalkan.</span><button class="btn small" id="yes">Ya, hapus</button><button class="btn ghost small" id="no">Batal</button>';
+    $('#no').addEventListener('click',function(){route()});
+    $('#yes').addEventListener('click',function(){if(b.dataset.r==='prog')prog={done:{},quiz:{},best:{},ans:{}};else custom={subs:[],questions:[]};quiz=null;save();route();toast('Data direset')});
+  })});
+}
+
+route();
+})();
+</script>
+</body></html>
